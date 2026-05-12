@@ -10,177 +10,846 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#0f0e17; --surface:#1a1828; --surface2:#221f35; --surface3:#2a263e;
-    --border:#2e2a45; --border2:#3a3558;
-    --amber:#e8a45a; --amber2:#f0b570; --amber-dim:#c97d38;
-    --mauve:#c97bb2; --mauve2:#e09ad0;
-    --teal:#7ec8c8; --teal2:#9edede;
-    --sage:#7ec8a0; --violet:#9a7ac8; --rose:#e87a9a;
-    --text:#e8e6f0; --muted:#8a86a8; --muted2:#6a6688; --faint:#3a3658;
-    --female:var(--mauve); --male:var(--teal);
-    --radius:16px;
-    --shadow:0 4px 32px rgba(0,0,0,0.4),0 1px 8px rgba(0,0,0,0.3);
-    --shadow-sm:0 2px 16px rgba(0,0,0,0.3);
+    /* Core palette */
+    --ink: #1A1210;
+    --ink-mid: #4A3830;
+    --ink-light: #9A8878;
+    --cream: #FDF6ED;
+    --cream-warm: #FAF0E2;
+    --cream-dark: #F0E4D0;
+    --border: #E8D8C4;
+    --white: #FFFDF9;
+
+    /* Section accent colors */
+    --terra: #C4603A;
+    --terra-light: #E08060;
+    --terra-pale: #FDF0EB;
+    --terra-mid: #A04828;
+
+    --rose: #C44060;
+    --rose-light: #E06080;
+    --rose-pale: #FDF0F4;
+
+    --sage: #4A7A58;
+    --sage-light: #6A9A78;
+    --sage-pale: #EEF6F0;
+
+    --violet: #6A4A8A;
+    --violet-light: #8A6AAA;
+    --violet-pale: #F4F0FA;
+
+    --blue: #3A5A8A;
+    --blue-light: #5A7AAA;
+    --blue-pale: #EEF2FA;
+
+    --amber: #C47A20;
+    --amber-pale: #FDF6E8;
+
+    /* Semantic */
+    --female: var(--rose);
+    --male: var(--blue);
+    --bg: var(--cream);
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,18,16,0.08), 0 1px 6px rgba(26,18,16,0.05);
+    --shadow-sm: 0 2px 12px rgba(26,18,16,0.06);
   }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;font-size:16px;overflow-x:hidden;font-weight:300}
-  body::before{content:'';position:fixed;top:-30%;left:-20%;width:60vw;height:60vw;background:radial-gradient(circle,rgba(201,123,178,0.08) 0%,transparent 70%);pointer-events:none;z-index:0}
-  body::after{content:'';position:fixed;bottom:-20%;right:-10%;width:50vw;height:50vw;background:radial-gradient(circle,rgba(232,164,90,0.07) 0%,transparent 70%);pointer-events:none;z-index:0}
-  .progress-bar{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--amber),var(--mauve),var(--teal));z-index:9999;transition:width .1s ease}
-  .container{max-width:1040px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
-  /* COVER */
-  .cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;overflow:hidden;background:var(--bg);padding:0 0 72px}
-  .cover-illustration{position:absolute;inset:0;width:100%;height:100%}
-  .cover-content{position:relative;z-index:10;text-align:center;padding:0 32px;max-width:860px}
-  .cover-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,164,90,0.1);border:1px solid rgba(232,164,90,0.25);border-radius:30px;padding:8px 22px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;color:var(--amber);margin-bottom:32px}
-  .cover h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5.5vw,68px);font-weight:300;line-height:1.08;color:var(--text);margin-bottom:24px;letter-spacing:-0.02em}
-  .cover h1 em{font-style:italic;color:var(--amber);font-weight:400}
-  .cover h1 strong{font-weight:700;color:var(--text)}
-  .cover-sub{font-size:15px;color:var(--muted);max-width:540px;margin:0 auto 40px;line-height:1.75;font-weight:300}
-  .cover-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-  .cover-pill{background:rgba(232,246,237,0.06);border:1px solid var(--border2);border-radius:30px;padding:7px 18px;font-size:12px;color:var(--muted);font-weight:400;display:flex;align-items:center;gap:6px}
-  .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--faint);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;animation:bounce 2.5s ease-in-out infinite}
-  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
-  /* TOC */
-  .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 40px;margin:52px 28px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;z-index:1}
-  @media(min-width:1096px){.toc{margin-left:auto;margin-right:auto;max-width:1040px}}
-  .toc::before{content:'Contents';position:absolute;top:-16px;right:24px;font-family:'Fraunces',serif;font-size:100px;font-weight:700;color:rgba(232,164,90,0.04);line-height:1;pointer-events:none;white-space:nowrap}
-  .toc-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-  .toc-label::after{content:'';flex:1;height:1px;background:var(--border)}
-  .toc ol{columns:2;column-gap:40px;padding:0;list-style:none;counter-reset:toc}
-  .toc li{margin-bottom:10px;break-inside:avoid;display:flex;align-items:baseline;gap:10px;counter-increment:toc}
-  .toc li::before{content:counter(toc,decimal-leading-zero);font-size:10px;font-weight:700;color:var(--amber);opacity:0.5;min-width:22px;flex-shrink:0}
-  .toc a{color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:400;transition:color .2s;line-height:1.45}
-  .toc a:hover{color:var(--amber)}
-  /* SECTIONS */
-  section{margin-bottom:40px;position:relative;z-index:1}
-  .section-inner{background:var(--surface);border-radius:var(--radius);padding:48px 52px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden}
-  .theme-amber,.theme-terra{border-top:2px solid var(--amber);--accent:var(--amber)}
-  .theme-mauve,.theme-rose{border-top:2px solid var(--mauve);--accent:var(--mauve)}
-  .theme-teal,.theme-blue{border-top:2px solid var(--teal);--accent:var(--teal)}
-  .theme-sage{border-top:2px solid var(--sage);--accent:var(--sage)}
-  .theme-violet{border-top:2px solid var(--violet);--accent:var(--violet)}
-  .section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:12px;font-weight:600}
-  h2.section-title{font-family:'Fraunces',Georgia,serif;font-size:clamp(22px,2.8vw,34px);font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.2;display:flex;align-items:flex-start;gap:16px}
-  .section-icon{width:42px;height:42px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:18px}
-  .section-icon svg{width:20px;height:20px}
-  .divider{height:2px;width:48px;background:var(--accent,var(--amber));border-radius:2px;margin:18px 0 32px;opacity:.7}
-  p{margin-bottom:18px;color:var(--text);line-height:1.9}
-  p:last-child{margin-bottom:0}
-  strong{color:var(--text);font-weight:600}
-  em{font-style:italic;color:var(--muted)}
-  h3{font-family:'Fraunces',serif;font-size:20px;font-weight:400;color:var(--text);margin:38px 0 14px;line-height:1.3;padding-bottom:10px;border-bottom:1px solid var(--border)}
-  ul,ol{padding-left:22px;margin:16px 0 20px}
-  li{margin-bottom:10px;line-height:1.75;color:var(--muted)}
-  /* STATS */
-  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:28px 0}
-  .stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:22px 18px;text-align:center;position:relative;overflow:hidden}
-  .stat-card.female{border-color:rgba(201,123,178,0.3);background:rgba(201,123,178,0.06)}
-  .stat-card.male{border-color:rgba(126,200,200,0.3);background:rgba(126,200,200,0.06)}
-  .stat-card.neutral{border-color:rgba(126,200,160,0.3);background:rgba(126,200,160,0.06)}
-  .stat-card .number{font-family:'Fraunces',serif;font-size:42px;font-weight:700;line-height:1;margin-bottom:8px}
-  .stat-card.female .number{color:var(--mauve)}
-  .stat-card.male .number{color:var(--teal)}
-  .stat-card.neutral .number{color:var(--sage)}
-  .stat-card .label{font-size:12px;color:var(--muted);line-height:1.45}
-  /* GENDER */
-  .gender-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:24px 0}
-  @media(max-width:640px){.gender-grid{grid-template-columns:1fr}}
-  .gender-card{border-radius:14px;padding:24px 22px}
-  .gender-card.male{background:rgba(126,200,200,0.07);border:1px solid rgba(126,200,200,0.2)}
-  .gender-card.female{background:rgba(201,123,178,0.07);border:1px solid rgba(201,123,178,0.2)}
-  .gender-card h3{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin:0 0 14px;font-weight:700;padding:0;border:none}
-  .gender-card.male h3{color:var(--teal)}
-  .gender-card.female h3{color:var(--mauve)}
-  .gender-card ul{font-size:13.5px}
-  .gender-card li{color:var(--muted)}
-  /* CHARTS */
-  .chart-wrap{margin:28px 0}
-  .chart-title{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:12px;text-align:center}
-  .chart-source{font-size:11px;color:var(--muted2);text-align:center;margin-top:10px}
-  .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px 0}
-  @media(max-width:700px){.chart-row{grid-template-columns:1fr}}
-  /* CALLOUTS */
-  .callout{border-radius:12px;padding:18px 22px;margin:24px 0;font-size:14px;color:var(--muted);line-height:1.7;border-left:3px solid var(--accent,var(--amber));background:var(--surface2)}
-  .callout.warning{border-color:var(--amber);background:rgba(232,164,90,0.07)}
-  .callout.female{border-color:var(--mauve);background:rgba(201,123,178,0.07)}
-  .callout strong{display:block;margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.8px;font-weight:700;color:var(--accent,var(--amber))}
-  .callout.warning strong{color:var(--amber)}
-  .callout.female strong{color:var(--mauve)}
-  /* TIMELINE */
-  .timeline{margin:28px 0}
-  .tl-item{display:flex;gap:18px;margin-bottom:20px}
-  .tl-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;margin-top:2px}
-  .tl-dot.indigo{background:var(--teal);color:var(--bg)}
-  .tl-dot.rose{background:var(--mauve);color:var(--bg)}
-  .tl-dot.both{background:linear-gradient(135deg,var(--teal) 50%,var(--mauve) 50%);color:white}
-  .tl-body h4{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)}
-  .tl-body p{font-size:13px;color:var(--muted2);margin:0}
-  /* BARS */
-  .insecurity-list{margin:20px 0}
-  .insecurity-item{margin-bottom:14px}
-  .insecurity-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--muted)}
-  .bar-bg{background:var(--surface2);border-radius:6px;height:7px;overflow:hidden}
-  .bar-fill{height:100%;border-radius:6px;transition:width 1.2s ease}
-  .bar-male{background:linear-gradient(90deg,var(--teal),var(--teal2))}
-  .bar-female{background:linear-gradient(90deg,var(--mauve),var(--mauve2))}
-  /* RECS */
-  .rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:24px 0}
-  .rec-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:22px 20px}
-  .rec-card .rec-num{width:30px;height:30px;background:var(--amber);color:var(--bg);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-bottom:14px}
-  .rec-card h4{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text)}
-  .rec-card p{font-size:13px;color:var(--muted);margin:0;line-height:1.6}
-  /* PRACTICAL */
-  .practical-section{background:linear-gradient(160deg,var(--surface) 0%,rgba(232,164,90,0.04) 100%)}
-  .practical-section h3{color:var(--amber);border-color:rgba(232,164,90,0.2)}
-  .practical-section p{font-size:16px;line-height:1.95}
-  .practical-section li{font-size:15.5px;line-height:1.8}
-  .practical-section strong{color:var(--amber)}
-  /* WARM NOTE */
-  .warm-note{background:rgba(201,123,178,0.08);border:1px solid rgba(201,123,178,0.2);border-radius:14px;padding:22px 26px;margin:24px 0;font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--muted);line-height:1.85;font-weight:300;position:relative}
-  .warm-note::before{content:'✦';position:absolute;top:-10px;left:18px;background:var(--surface);padding:0 6px;color:var(--mauve);font-size:13px;font-style:normal}
-  /* HIGHLIGHT */
-  .highlight-box{background:var(--surface2);border:1px solid var(--border2);border-radius:16px;padding:32px 36px;margin:32px 0;position:relative;overflow:hidden}
-  .highlight-box::before{content:'"';position:absolute;top:-24px;left:20px;font-family:'Fraunces',serif;font-size:130px;color:rgba(232,164,90,0.1);line-height:1;pointer-events:none}
-  .highlight-box p{color:var(--muted);font-size:17px;font-style:italic;line-height:1.8;position:relative;font-family:'Fraunces',serif;font-weight:300;margin-bottom:12px}
-  .highlight-box cite{display:block;font-size:12px;opacity:.45;font-style:normal;position:relative;letter-spacing:.3px}
-  /* TABLE */
-  table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13px}
-  th{background:var(--surface2);color:var(--text);padding:12px 14px;text-align:left;font-weight:600;font-size:12px;letter-spacing:.3px;border-bottom:1px solid var(--border2)}
-  td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6;color:var(--muted)}
-  tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
-  tr:hover td{background:rgba(232,164,90,0.05)}
-  /* CHECKLIST */
-  .checklist{list-style:none;padding:0;margin:18px 0}
-  .checklist li{padding:10px 0 10px 38px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);line-height:1.65;margin:0}
-  .checklist li:last-child{border-bottom:none}
-  .checklist li::before{content:'✓';position:absolute;left:0;top:10px;width:24px;height:24px;background:var(--sage);color:var(--bg);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
-  .checklist li strong{color:var(--text);font-weight:600}
-  /* SPECTRUM */
-  .spectrum-card{background:var(--surface2);border:1px solid var(--border);border-radius:13px;padding:20px 24px;margin:14px 0}
-  .spectrum-card h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--violet);margin-bottom:10px}
-  .spectrum-card p{font-size:14px;margin:0;color:var(--muted)}
-  /* CLOSING WARM */
-  .closing-warm{background:var(--surface2);border:1px solid var(--border2);border-radius:16px;padding:36px 40px;margin:36px 0 0;text-align:center;position:relative;overflow:hidden}
-  .closing-warm::before{content:'♥';position:absolute;bottom:-16px;right:20px;font-size:100px;color:rgba(201,123,178,0.08);line-height:1}
-  .closing-warm p{color:var(--muted);font-family:'Fraunces',serif;font-style:italic;font-size:18px;line-height:1.85;margin-bottom:14px;font-weight:300;position:relative}
-  .closing-warm .sign{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted2);font-style:normal;margin:0;position:relative}
-  /* SOURCES */
-  .sources-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:40px 48px;margin-bottom:52px;position:relative;overflow:hidden;z-index:1}
-  .sources-section h2{font-family:'Fraunces',serif;color:var(--text);font-size:26px;font-weight:300;margin-bottom:24px}
-  .sources-section ol{padding-left:18px}
-  .sources-section li{margin-bottom:10px;font-size:12px;line-height:1.65;color:var(--muted2)}
-  .sources-section a{color:rgba(232,164,90,0.75);text-decoration:none}
-  .sources-section a:hover{color:var(--amber);text-decoration:underline}
-  /* LEGEND & FOOTER */
-  .legend{display:flex;gap:18px;justify-content:center;font-size:12px;color:var(--muted);margin-bottom:10px}
-  .legend span{display:flex;align-items:center;gap:6px}
-  .legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-  footer{text-align:center;padding:36px 20px;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);position:relative;z-index:1}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  section{animation:fadeUp .55s ease both}
-  @media(max-width:600px){.section-inner{padding:28px 22px}.cover h1{font-size:32px}.toc{margin:0 16px;padding:28px 22px}.toc ol{columns:1}.sources-section{padding:28px 24px}.highlight-box{padding:26px 22px}.closing-warm{padding:28px 24px}body{font-size:15px}}
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* ── COVER / HERO ── */
+  .cover {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    padding: 0 0 64px;
+  }
+
+  .cover-illustration {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 32px;
+    max-width: 860px;
+  }
+
+  .cover-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(253,246,237,0.12);
+    border: 1px solid rgba(253,246,237,0.25);
+    border-radius: 30px;
+    padding: 8px 22px;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(253,246,237,0.65);
+    margin-bottom: 32px;
+  }
+
+  .cover h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(32px, 6vw, 72px);
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--cream);
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+
+  .cover h1 em {
+    font-style: italic;
+    color: var(--terra-light);
+    font-weight: 400;
+  }
+
+  .cover h1 strong {
+    font-weight: 700;
+    color: var(--cream);
+  }
+
+  .cover-sub {
+    font-size: 15px;
+    color: rgba(253,246,237,0.6);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .cover-pills {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cover-pill {
+    background: rgba(253,246,237,0.1);
+    border: 1px solid rgba(253,246,237,0.2);
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-size: 12px;
+    color: rgba(253,246,237,0.7);
+    font-weight: 500;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(253,246,237,0.35);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin: 52px 28px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .toc::before {
+    content: 'Contents';
+    position: absolute;
+    top: -20px; right: 30px;
+    font-family: 'Fraunces', serif;
+    font-size: 120px;
+    font-weight: 700;
+    color: rgba(196,96,58,0.04);
+    line-height: 1;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  @media(min-width: 1096px) { .toc { margin-left: auto; margin-right: auto; } }
+  .toc-label {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--terra);
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toc-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .toc ol {
+    columns: 2;
+    column-gap: 40px;
+    padding-left: 20px;
+    list-style: none;
+    counter-reset: toc-counter;
+    padding: 0;
+  }
+  .toc li {
+    margin-bottom: 10px;
+    break-inside: avoid;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    counter-increment: toc-counter;
+  }
+  .toc li::before {
+    content: counter(toc-counter, decimal-leading-zero);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--terra);
+    opacity: 0.6;
+    min-width: 20px;
+    flex-shrink: 0;
+  }
+  .toc a {
+    color: var(--ink-mid);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color 0.2s;
+    line-height: 1.4;
+  }
+  .toc a:hover { color: var(--terra); }
+
+  /* ── SECTIONS ── */
+  section { margin-bottom: 40px; }
+
+  .section-inner {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 48px 52px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Section color themes */
+  .section-inner.theme-terra { --accent: var(--terra); --accent-pale: var(--terra-pale); border-top: 3px solid var(--terra); }
+  .section-inner.theme-rose { --accent: var(--rose); --accent-pale: var(--rose-pale); border-top: 3px solid var(--rose); }
+  .section-inner.theme-sage { --accent: var(--sage); --accent-pale: var(--sage-pale); border-top: 3px solid var(--sage); }
+  .section-inner.theme-violet { --accent: var(--violet); --accent-pale: var(--violet-pale); border-top: 3px solid var(--violet); }
+  .section-inner.theme-blue { --accent: var(--blue); --accent-pale: var(--blue-pale); border-top: 3px solid var(--blue); }
+  .section-inner.theme-amber { --accent: var(--amber); --accent-pale: var(--amber-pale); border-top: 3px solid var(--amber); }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  h2.section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.2;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 20px;
+  }
+
+  .theme-terra .section-icon { background: var(--terra-pale); }
+  .theme-rose .section-icon { background: var(--rose-pale); }
+  .theme-sage .section-icon { background: var(--sage-pale); }
+  .theme-violet .section-icon { background: var(--violet-pale); }
+  .theme-blue .section-icon { background: var(--blue-pale); }
+  .theme-amber .section-icon { background: var(--amber-pale); }
+
+  .divider {
+    height: 2px;
+    width: 52px;
+    background: var(--accent, var(--terra));
+    border-radius: 2px;
+    margin: 18px 0 32px;
+    opacity: 0.7;
+  }
+
+  p { margin-bottom: 18px; color: var(--ink); line-height: 1.85; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+  em { font-style: italic; }
+
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 40px 0 14px;
+    line-height: 1.3;
+  }
+
+  ul, ol {
+    padding-left: 24px;
+    margin: 16px 0 20px;
+  }
+
+  li {
+    margin-bottom: 10px;
+    line-height: 1.75;
+    color: var(--ink-mid);
+  }
+
+  /* ── STAT CARDS ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .stat-card {
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+  }
+
+  .stat-card.female { background: var(--rose-pale); border: 1px solid rgba(196,64,96,0.15); }
+  .stat-card.male { background: var(--blue-pale); border: 1px solid rgba(58,90,138,0.15); }
+  .stat-card.neutral { background: var(--sage-pale); border: 1px solid rgba(74,122,88,0.15); }
+
+  .stat-card .number {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-card.female .number { color: var(--rose); }
+  .stat-card.male .number { color: var(--blue); }
+  .stat-card.neutral .number { color: var(--sage); }
+
+  .stat-card .label {
+    font-size: 12px;
+    color: var(--ink-mid);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  /* ── GENDER GRID ── */
+  .gender-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 28px 0;
+  }
+  @media(max-width: 640px) { .gender-grid { grid-template-columns: 1fr; } }
+
+  .gender-card {
+    border-radius: 14px;
+    padding: 26px 24px;
+  }
+
+  .gender-card.male {
+    background: var(--blue-pale);
+    border: 1px solid rgba(58,90,138,0.2);
+  }
+
+  .gender-card.female {
+    background: var(--rose-pale);
+    border: 1px solid rgba(196,64,96,0.2);
+  }
+
+  .gender-card h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+
+  .gender-card.male h3 { color: var(--blue); }
+  .gender-card.female h3 { color: var(--rose); }
+
+  .gender-card ul { font-size: 14px; }
+  .gender-card li { color: var(--ink-mid); }
+
+  /* ── CHARTS ── */
+  .chart-wrap { margin: 32px 0; }
+  .chart-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-mid);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .chart-source {
+    font-size: 11px;
+    color: var(--ink-light);
+    text-align: center;
+    margin-top: 10px;
+  }
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin: 32px 0;
+  }
+  @media(max-width: 700px) { .chart-row { grid-template-columns: 1fr; } }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin: 28px 0;
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    border-left: 4px solid var(--accent, var(--terra));
+    background: var(--accent-pale, var(--terra-pale));
+  }
+
+  .callout.warning {
+    border-color: var(--amber);
+    background: var(--amber-pale);
+  }
+
+  .callout.female {
+    border-color: var(--rose);
+    background: var(--rose-pale);
+  }
+
+  .callout strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--accent, var(--terra));
+  }
+
+  .callout.warning strong { color: var(--amber); }
+  .callout.female strong { color: var(--rose); }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 32px 0; }
+  .tl-item { display: flex; gap: 20px; margin-bottom: 22px; }
+  .tl-dot {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    flex-shrink: 0; margin-top: 2px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .tl-dot.indigo { background: var(--blue); color: white; }
+  .tl-dot.rose { background: var(--rose); color: white; }
+  .tl-dot.both {
+    background: linear-gradient(135deg, var(--blue) 50%, var(--rose) 50%);
+    color: white;
+  }
+  .tl-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .tl-body p { font-size: 13px; color: var(--ink-light); margin: 0; }
+
+  /* ── BARS ── */
+  .insecurity-list { margin: 24px 0; }
+  .insecurity-item { margin-bottom: 16px; }
+  .insecurity-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--ink-mid);
+  }
+  .bar-bg {
+    background: var(--cream-dark);
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 1.2s ease; }
+  .bar-male { background: linear-gradient(90deg, var(--blue), var(--blue-light)); }
+  .bar-female { background: linear-gradient(90deg, var(--rose), var(--rose-light)); }
+
+  /* ── RECS ── */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .rec-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px;
+  }
+  .rec-card .rec-num {
+    width: 32px; height: 32px;
+    background: var(--terra);
+    color: white;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .rec-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+  .rec-card p { font-size: 13px; color: var(--ink-mid); margin: 0; line-height: 1.6; }
+
+  /* ── SOURCES ── */
+  .sources-section {
+    background: var(--ink);
+    color: rgba(253,246,237,0.55);
+    border-radius: var(--radius);
+    padding: 40px 48px;
+    margin-bottom: 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sources-section::before {
+    content: '📚';
+    position: absolute;
+    top: 20px; right: 32px;
+    font-size: 80px;
+    opacity: 0.06;
+  }
+  .sources-section h2 {
+    font-family: 'Fraunces', serif;
+    color: var(--cream);
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 28px;
+  }
+  .sources-section ol { padding-left: 20px; }
+  .sources-section li {
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(253,246,237,0.5);
+  }
+  .sources-section a { color: rgba(224,128,96,0.8); text-decoration: none; }
+  .sources-section a:hover { color: var(--terra-light); text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 36px 20px;
+    font-size: 12px;
+    color: var(--ink-light);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex; gap: 20px; justify-content: center;
+    font-size: 12px; color: var(--ink-mid); margin-bottom: 12px;
+  }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  /* ── HIGHLIGHT / PULL QUOTE ── */
+  .highlight-box {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin: 36px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight-box::before {
+    content: '"';
+    position: absolute;
+    top: -30px; left: 24px;
+    font-family: 'Fraunces', serif;
+    font-size: 160px;
+    color: rgba(196,96,58,0.15);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .highlight-box p {
+    color: rgba(253,246,237,0.88);
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.8;
+    position: relative;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+  .highlight-box cite {
+    display: block;
+    font-size: 12px;
+    opacity: 0.45;
+    font-style: normal;
+    letter-spacing: 0.3px;
+    position: relative;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 28px 0;
+    font-size: 13px;
+  }
+  th {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+  }
+  th:first-child { border-radius: 10px 0 0 0; }
+  th:last-child { border-radius: 0 10px 0 0; }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+  tr:nth-child(even) td { background: var(--cream); }
+  tr:hover td { background: var(--terra-pale); }
+
+  /* ── PRACTICAL SECTIONS ── */
+  .practical-section {
+    background: linear-gradient(160deg, #FFFDF9 0%, #FDF6F2 100%);
+  }
+
+  .practical-section h3 {
+    color: var(--terra);
+    font-size: 20px;
+    margin: 36px 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(196,96,58,0.15);
+  }
+
+  .practical-section p { font-size: 16px; line-height: 1.9; }
+
+  .practical-section li {
+    font-size: 15.5px;
+    line-height: 1.75;
+  }
+
+  .practical-section strong { color: var(--terra); }
+
+  /* ── WARM NOTE ── */
+  .warm-note {
+    background: linear-gradient(135deg, var(--terra-pale) 0%, #FFF6F0 100%);
+    border: 1px solid rgba(196,96,58,0.18);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin: 28px 0;
+    font-style: italic;
+    font-size: 16.5px;
+    color: var(--ink-mid);
+    line-height: 1.85;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    position: relative;
+  }
+
+  .warm-note::before {
+    content: '✦';
+    position: absolute;
+    top: -10px; left: 20px;
+    background: var(--terra-pale);
+    padding: 0 6px;
+    color: var(--terra);
+    font-size: 14px;
+    font-style: normal;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; padding: 0; margin: 20px 0; }
+  .checklist li {
+    padding: 12px 0 12px 40px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0; top: 12px;
+    width: 26px; height: 26px;
+    background: var(--sage);
+    color: white;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .checklist li strong { color: var(--ink); font-weight: 600; }
+
+  /* ── SPECTRUM CARDS ── */
+  .spectrum-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 16px 0;
+  }
+  .spectrum-card h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--violet);
+    margin-bottom: 10px;
+  }
+  .spectrum-card p {
+    font-size: 14px;
+    margin: 0;
+    color: var(--ink-mid);
+  }
+
+  /* ── CLOSING WARM ── */
+  .closing-warm {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 40px 44px;
+    margin: 40px 0 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .closing-warm::before {
+    content: '♥';
+    position: absolute;
+    bottom: -20px; right: 20px;
+    font-size: 120px;
+    color: rgba(196,64,96,0.1);
+    line-height: 1;
+  }
+  .closing-warm p {
+    color: rgba(253,246,237,0.85);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.8;
+    margin-bottom: 14px;
+    font-weight: 300;
+    position: relative;
+  }
+  .closing-warm .sign {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(253,246,237,0.38);
+    font-style: normal;
+    margin: 0;
+    position: relative;
+  }
+
+  /* ── MOBILE ── */
+  @media(max-width: 600px) {
+    .section-inner { padding: 28px 22px; }
+    .cover h1 { font-size: 36px; }
+    .toc { margin: 0 16px; padding: 28px 24px; }
+    .toc ol { columns: 1; }
+    .sources-section { padding: 28px 24px; }
+    .highlight-box { padding: 28px 24px; }
+    body { font-size: 15px; }
+    .closing-warm { padding: 32px 28px; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  section {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* Reading progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--terra), var(--rose), var(--violet));
+    z-index: 9999;
+    transition: width 0.1s ease;
+  }
 </style>
 
 </head>
@@ -216,389 +885,179 @@
 
 <!-- ═══════════════════════════════ COVER ═══════════════════════════════ -->
 <div class="cover">
+
+  <!-- Illustrated SVG Cover -->
   <svg class="cover-illustration" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
     <defs>
-      <!-- Background gradient - Himanshi dark navy -->
-      <radialGradient id="bg" cx="50%" cy="35%" r="75%">
-        <stop offset="0%" stop-color="#1a1630"/>
-        <stop offset="100%" stop-color="#0a0912"/>
+      <radialGradient id="bg-grad" cx="50%" cy="40%" r="70%">
+        <stop offset="0%" stop-color="#2A1A14"/>
+        <stop offset="100%" stop-color="#0E0A08"/>
       </radialGradient>
-      <!-- Glow spots -->
-      <radialGradient id="gl-mauve" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#c97bb2" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#c97bb2" stop-opacity="0"/>
+      <radialGradient id="glow-terra" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#C4603A" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#C4603A" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="gl-amber" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#e8a45a" stop-opacity="0.18"/>
-        <stop offset="100%" stop-color="#e8a45a" stop-opacity="0"/>
+      <radialGradient id="glow-rose" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#C44060" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#C44060" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="gl-teal" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#7ec8c8" stop-opacity="0.14"/>
-        <stop offset="100%" stop-color="#7ec8c8" stop-opacity="0"/>
+      <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#3A5A8A" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#3A5A8A" stop-opacity="0"/>
       </radialGradient>
-      <!-- Petal gradients -->
-      <linearGradient id="mg-petal" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f0b570"/>
-        <stop offset="100%" stop-color="#c97d38"/>
-      </linearGradient>
-      <linearGradient id="mg-petal2" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#e8c87a"/>
-        <stop offset="100%" stop-color="#d4a040"/>
-      </linearGradient>
-      <linearGradient id="hib-petal" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#e09ad0"/>
-        <stop offset="100%" stop-color="#a04880"/>
-      </linearGradient>
-      <linearGradient id="hib-petal2" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#c97bb2"/>
-        <stop offset="100%" stop-color="#804060"/>
-      </linearGradient>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <filter id="soft-blur">
+        <feGaussianBlur stdDeviation="2"/>
       </filter>
-      <filter id="soft">
-        <feGaussianBlur stdDeviation="1.5"/>
+      <filter id="glow-filter">
+        <feGaussianBlur stdDeviation="8" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     </defs>
 
-    <!-- Sky background -->
-    <rect width="1440" height="900" fill="url(#bg)"/>
+    <!-- Background -->
+    <rect width="1440" height="900" fill="url(#bg-grad)"/>
 
-    <!-- Ambient glows - same technique as Himanshi -->
-    <ellipse cx="220" cy="280" rx="480" ry="420" fill="url(#gl-mauve)"/>
-    <ellipse cx="1280" cy="180" rx="420" ry="360" fill="url(#gl-amber)"/>
-    <ellipse cx="720" cy="750" rx="560" ry="320" fill="url(#gl-teal)"/>
-    <ellipse cx="900" cy="400" rx="300" ry="280" fill="url(#gl-mauve)" opacity="0.5"/>
+    <!-- Ambient glows -->
+    <ellipse cx="200" cy="300" rx="400" ry="350" fill="url(#glow-terra)" opacity="0.7"/>
+    <ellipse cx="1300" cy="200" rx="350" ry="300" fill="url(#glow-rose)" opacity="0.6"/>
+    <ellipse cx="800" cy="700" rx="500" ry="300" fill="url(#glow-blue)" opacity="0.4"/>
 
-    <!-- ═══════ LARGE BANANA LEAVES — left side ═══════ -->
-    <g opacity="0.55">
-      <!-- Main left leaf sweeping down -->
-      <path d="M -80 100 Q 180 -20 420 200 Q 320 380 100 420 Q -60 380 -80 100 Z"
-        fill="none" stroke="#3a7a4a" stroke-width="1.8"/>
-      <!-- Leaf midrib -->
-      <path d="M -80 100 Q 200 180 420 200" fill="none" stroke="#4a9a5a" stroke-width="1" opacity="0.6"/>
-      <!-- Leaf veins -->
-      <path d="M 80 140 Q 200 160 300 220" fill="none" stroke="#4a9a5a" stroke-width="0.6" opacity="0.4"/>
-      <path d="M 140 200 Q 240 210 340 250" fill="none" stroke="#4a9a5a" stroke-width="0.6" opacity="0.4"/>
-      <path d="M 160 260 Q 270 265 360 290" fill="none" stroke="#4a9a5a" stroke-width="0.6" opacity="0.4"/>
+    <!-- Large botanical forms - left side -->
+    <!-- Leaf 1 - large sweeping -->
+    <path d="M -60 400 C 80 200, 280 150, 320 300 C 360 450, 200 550, 80 520 C -40 490, -80 500, -60 400 Z"
+      fill="none" stroke="#C4603A" stroke-width="1.5" opacity="0.35"/>
+    <path d="M 20 380 C 100 280, 240 240, 260 340"
+      fill="none" stroke="#C4603A" stroke-width="1" opacity="0.25"/>
 
-      <!-- Second leaf overlapping -->
-      <path d="M -100 300 Q 100 180 380 320 Q 280 500 60 540 Q -80 500 -100 300 Z"
-        fill="none" stroke="#2a6a3a" stroke-width="1.5"/>
-      <path d="M -100 300 Q 140 360 380 320" fill="none" stroke="#3a7a4a" stroke-width="0.8" opacity="0.5"/>
+    <!-- Leaf 2 -->
+    <path d="M 100 600 C 180 480, 340 440, 380 560 C 420 680, 260 740, 160 720 C 60 700, 40 680, 100 600 Z"
+      fill="none" stroke="#C44060" stroke-width="1.5" opacity="0.3"/>
 
-      <!-- Third leaf — top left corner -->
-      <path d="M -120 -40 Q 60 40 200 -10 Q 160 120 20 160 Q -80 120 -120 -40 Z"
-        fill="none" stroke="#3a7a4a" stroke-width="1.4"/>
-    </g>
+    <!-- Stem lines left -->
+    <path d="M 0 900 C 100 700, 150 500, 200 300 C 250 100, 300 50, 350 20"
+      fill="none" stroke="#C4603A" stroke-width="1" opacity="0.2" stroke-dasharray="4,8"/>
 
-    <!-- ═══════ LARGE BANANA LEAVES — right side ═══════ -->
-    <g opacity="0.5">
-      <path d="M 1520 50 Q 1280 -30 1040 180 Q 1140 360 1360 400 Q 1520 360 1520 50 Z"
-        fill="none" stroke="#3a7a4a" stroke-width="1.8"/>
-      <path d="M 1520 50 Q 1260 180 1040 180" fill="none" stroke="#4a9a5a" stroke-width="1" opacity="0.6"/>
-      <path d="M 1360 100 Q 1240 150 1140 220" fill="none" stroke="#4a9a5a" stroke-width="0.6" opacity="0.4"/>
-      <path d="M 1300 160 Q 1200 200 1110 260" fill="none" stroke="#4a9a5a" stroke-width="0.6" opacity="0.4"/>
+    <!-- Botanical right side -->
+    <path d="M 1500 200 C 1360 300, 1240 280, 1220 180 C 1200 80, 1340 20, 1440 60 C 1540 100, 1560 160, 1500 200 Z"
+      fill="none" stroke="#C44060" stroke-width="1.5" opacity="0.3"/>
 
-      <path d="M 1540 320 Q 1340 200 1080 320 Q 1180 500 1400 540 Q 1560 480 1540 320 Z"
-        fill="none" stroke="#2a6a3a" stroke-width="1.5"/>
-      <path d="M 1540 320 Q 1300 370 1080 320" fill="none" stroke="#3a7a4a" stroke-width="0.8" opacity="0.5"/>
+    <path d="M 1440 500 C 1300 420, 1200 380, 1180 480 C 1160 580, 1280 640, 1380 620 C 1480 600, 1500 560, 1440 500 Z"
+      fill="none" stroke="#6A4A8A" stroke-width="1.5" opacity="0.3"/>
 
-      <!-- Trailing vine -->
-      <path d="M 1440 700 Q 1380 620 1360 520 Q 1340 420 1380 340"
-        fill="none" stroke="#3a7a4a" stroke-width="1" opacity="0.4" stroke-dasharray="6,10"/>
-    </g>
+    <!-- Small botanical details - scattered -->
+    <!-- Tiny flowers -->
+    <circle cx="420" cy="120" r="3" fill="#C4603A" opacity="0.5"/>
+    <circle cx="420" cy="120" r="8" fill="none" stroke="#C4603A" stroke-width="0.8" opacity="0.3"/>
+    <line x1="420" y1="108" x2="420" y2="100" stroke="#C4603A" stroke-width="0.8" opacity="0.3"/>
+    <line x1="432" y1="120" x2="440" y2="120" stroke="#C4603A" stroke-width="0.8" opacity="0.3"/>
+    <line x1="408" y1="120" x2="400" y2="120" stroke="#C4603A" stroke-width="0.8" opacity="0.3"/>
+    <line x1="420" y1="132" x2="420" y2="140" stroke="#C4603A" stroke-width="0.8" opacity="0.3"/>
 
-    <!-- ═══════ MARIGOLD (Genda) — large, left ═══════ -->
-    <g transform="translate(180, 380)" filter="url(#glow)">
-      <!-- Outer ring of petals - 16 petals -->
-      <g opacity="0.9">
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(22.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(45)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(67.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(90)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(112.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(135)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(157.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(180)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(202.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(225)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(247.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(270)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(292.5)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(315)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal)" transform="rotate(337.5)"/>
-      </g>
-      <!-- Middle ring - smaller, offset -->
-      <g opacity="0.95">
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(11.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(33.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(56.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(78.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(101.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(123.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(146.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(168.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(191.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(213.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(236.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(258.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(281.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(303.75)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(326.25)"/>
-        <ellipse cx="0" cy="-34" rx="8" ry="16" fill="url(#mg-petal2)" transform="rotate(348.75)"/>
-      </g>
-      <!-- Centre -->
-      <circle cx="0" cy="0" r="18" fill="#f0c060"/>
-      <circle cx="0" cy="0" r="12" fill="#e8a840"/>
-      <circle cx="0" cy="0" r="6" fill="#c07820"/>
-      <!-- Tiny dot texture on centre -->
-      <circle cx="-3" cy="-3" r="1.5" fill="#d09030" opacity="0.7"/>
-      <circle cx="3" cy="-2" r="1.5" fill="#d09030" opacity="0.7"/>
-      <circle cx="0" cy="4" r="1.5" fill="#d09030" opacity="0.7"/>
-      <circle cx="-4" cy="3" r="1" fill="#d09030" opacity="0.5"/>
-      <circle cx="4" cy="3" r="1" fill="#d09030" opacity="0.5"/>
-    </g>
+    <circle cx="1100" cy="750" r="3" fill="#C44060" opacity="0.5"/>
+    <circle cx="1100" cy="750" r="10" fill="none" stroke="#C44060" stroke-width="0.8" opacity="0.25"/>
+    <line x1="1100" y1="736" x2="1100" y2="726" stroke="#C44060" stroke-width="0.8" opacity="0.25"/>
+    <line x1="1114" y1="750" x2="1124" y2="750" stroke="#C44060" stroke-width="0.8" opacity="0.25"/>
 
-    <!-- ═══════ MARIGOLD — smaller, top right ═══════ -->
-    <g transform="translate(1260, 220) scale(0.65)" filter="url(#glow)" opacity="0.85">
-      <g opacity="0.9">
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(30)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(60)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(90)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(120)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(150)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(180)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(210)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(240)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(270)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(300)"/>
-        <ellipse cx="0" cy="-52" rx="10" ry="20" fill="url(#mg-petal2)" transform="rotate(330)"/>
-      </g>
-      <circle cx="0" cy="0" r="18" fill="#e8c060"/>
-      <circle cx="0" cy="0" r="10" fill="#c89030"/>
-    </g>
+    <!-- Abstract body forms - very subtle, impressionistic -->
+    <!-- Suggesting diverse bodies through abstract curves, not explicit -->
+    <path d="M 680 820 C 680 700, 700 650, 720 580 C 740 510, 750 480, 745 440 C 740 400, 720 380, 720 340 C 720 300, 730 270, 735 240"
+      fill="none" stroke="rgba(253,246,237,0.08)" stroke-width="20" stroke-linecap="round"/>
+    <path d="M 760 820 C 760 700, 740 650, 720 580"
+      fill="none" stroke="rgba(253,246,237,0.06)" stroke-width="16" stroke-linecap="round"/>
 
-    <!-- ═══════ HIBISCUS (Gudhal) — right side ═══════ -->
-    <g transform="translate(1180, 560)" filter="url(#glow)">
-      <!-- 5 hibiscus petals — heart-shaped -->
-      <path d="M 0 0 C -20 -60, -70 -80, -60 -40 C -50 -10, -20 0, 0 0 Z" fill="url(#hib-petal)" opacity="0.9"/>
-      <path d="M 0 0 C 20 -60, 70 -80, 60 -40 C 50 -10, 20 0, 0 0 Z" fill="url(#hib-petal)" opacity="0.9"/>
-      <path d="M 0 0 C -60 -20, -80 30, -45 50 C -20 60, 0 30, 0 0 Z" fill="url(#hib-petal2)" opacity="0.85"/>
-      <path d="M 0 0 C 60 -20, 80 30, 45 50 C 20 60, 0 30, 0 0 Z" fill="url(#hib-petal2)" opacity="0.85"/>
-      <path d="M 0 0 C -10 60, 30 80, 50 55 C 60 35, 30 10, 0 0 Z" fill="url(#hib-petal)" opacity="0.88"/>
-      <!-- Stamen column -->
-      <line x1="0" y1="0" x2="0" y2="-55" stroke="#f0d060" stroke-width="2.5" opacity="0.9"/>
-      <!-- Stamen dots -->
-      <circle cx="0" cy="-55" r="3" fill="#f0d060"/>
-      <circle cx="-6" cy="-50" r="2" fill="#f0d060"/>
-      <circle cx="6" cy="-50" r="2" fill="#f0d060"/>
-      <circle cx="-4" cy="-60" r="2" fill="#f0d060"/>
-      <circle cx="5" cy="-60" r="2" fill="#f0d060"/>
-      <circle cx="0" cy="-65" r="2.5" fill="#f0d060"/>
-      <!-- Centre -->
-      <circle cx="0" cy="0" r="10" fill="#c06090"/>
-      <circle cx="0" cy="0" r="5" fill="#a04070"/>
-    </g>
+    <!-- Second abstract form -->
+    <path d="M 900 870 C 895 750, 910 700, 920 640 C 930 580, 935 550, 930 510 C 925 470, 910 450, 908 410 C 906 370, 915 340, 918 310"
+      fill="none" stroke="rgba(196,64,96,0.07)" stroke-width="22" stroke-linecap="round"/>
 
-    <!-- ═══════ HIBISCUS — small, left bottom ═══════ -->
-    <g transform="translate(280, 680) scale(0.6)" filter="url(#glow)" opacity="0.7">
-      <path d="M 0 0 C -20 -60, -70 -80, -60 -40 C -50 -10, -20 0, 0 0 Z" fill="url(#hib-petal2)"/>
-      <path d="M 0 0 C 20 -60, 70 -80, 60 -40 C 50 -10, 20 0, 0 0 Z" fill="url(#hib-petal2)"/>
-      <path d="M 0 0 C -60 -20, -80 30, -45 50 C -20 60, 0 30, 0 0 Z" fill="url(#hib-petal)"/>
-      <path d="M 0 0 C 60 -20, 80 30, 45 50 C 20 60, 0 30, 0 0 Z" fill="url(#hib-petal)"/>
-      <path d="M 0 0 C -10 60, 30 80, 50 55 C 60 35, 30 10, 0 0 Z" fill="url(#hib-petal2)"/>
-      <line x1="0" y1="0" x2="0" y2="-55" stroke="#f0d060" stroke-width="2.5"/>
-      <circle cx="0" cy="-55" r="3" fill="#f0d060"/>
-      <circle cx="0" cy="0" r="10" fill="#c06090"/>
-    </g>
+    <!-- Third abstract form - different proportion -->
+    <path d="M 540 900 C 542 800, 550 760, 555 720 C 560 680, 560 660, 556 630 C 552 600, 545 585, 544 560 C 543 535, 548 515, 550 490"
+      fill="none" stroke="rgba(106,74,138,0.07)" stroke-width="18" stroke-linecap="round"/>
 
-    <!-- ═══════ JASMINE CLUSTERS (Mogra) ═══════ -->
-    <!-- Cluster 1 — top center area -->
-    <g transform="translate(580, 160)" opacity="0.8">
-      <!-- Jasmine vine -->
-      <path d="M 0 0 C 40 30, 80 20, 120 50 C 160 80, 190 70, 230 100"
-        fill="none" stroke="#3a6a3a" stroke-width="1.2"/>
-      <path d="M 40 30 C 20 10, 30 -20, 50 -30" fill="none" stroke="#3a6a3a" stroke-width="0.8"/>
-      <path d="M 120 50 C 130 20, 150 10, 160 -10" fill="none" stroke="#3a6a3a" stroke-width="0.8"/>
-      <!-- Jasmine flowers — 5-petal stars -->
-      <g transform="translate(0,0)">
-        <circle cx="0" cy="-8" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="7.6" cy="-2.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="4.7" cy="6.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="-4.7" cy="6.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="-7.6" cy="-2.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="0" cy="0" r="3" fill="#fffce8"/>
-        <circle cx="0" cy="0" r="1.5" fill="#e8d060"/>
-      </g>
-      <g transform="translate(50, 20)">
-        <circle cx="0" cy="-6" r="3" fill="#f0ede8" opacity="0.85"/>
-        <circle cx="5.7" cy="-1.9" r="3" fill="#f0ede8" opacity="0.85"/>
-        <circle cx="3.5" cy="4.9" r="3" fill="#f0ede8" opacity="0.85"/>
-        <circle cx="-3.5" cy="4.9" r="3" fill="#f0ede8" opacity="0.85"/>
-        <circle cx="-5.7" cy="-1.9" r="3" fill="#f0ede8" opacity="0.85"/>
-        <circle cx="0" cy="0" r="2.5" fill="#fffce8"/>
-        <circle cx="0" cy="0" r="1.2" fill="#e8d060"/>
-      </g>
-      <g transform="translate(120, 45)">
-        <circle cx="0" cy="-8" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="7.6" cy="-2.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="4.7" cy="6.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="-4.7" cy="6.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="-7.6" cy="-2.5" r="4" fill="#f0ede8" opacity="0.9"/>
-        <circle cx="0" cy="0" r="3" fill="#fffce8"/>
-        <circle cx="0" cy="0" r="1.5" fill="#e8d060"/>
-      </g>
-      <!-- Buds -->
-      <ellipse cx="160" cy="-5" rx="3" ry="6" fill="#f0ede8" opacity="0.7"/>
-      <ellipse cx="50" cy="-25" rx="2.5" ry="5" fill="#f0ede8" opacity="0.6"/>
-      <!-- Leaves -->
-      <ellipse cx="80" cy="20" rx="8" ry="4" fill="#3a7a4a" opacity="0.6" transform="rotate(-20,80,20)"/>
-      <ellipse cx="165" cy="15" rx="7" ry="3.5" fill="#3a7a4a" opacity="0.6" transform="rotate(15,165,15)"/>
-    </g>
+    <!-- Scattered dots - like stars or spores -->
+    <circle cx="580" cy="180" r="1.5" fill="rgba(253,246,237,0.4)"/>
+    <circle cx="600" cy="160" r="1" fill="rgba(253,246,237,0.3)"/>
+    <circle cx="560" cy="200" r="2" fill="rgba(253,246,237,0.2)"/>
+    <circle cx="900" cy="140" r="1.5" fill="rgba(196,64,96,0.5)"/>
+    <circle cx="920" cy="160" r="1" fill="rgba(196,64,96,0.3)"/>
+    <circle cx="880" cy="130" r="2" fill="rgba(196,64,96,0.2)"/>
+    <circle cx="300" cy="700" r="1.5" fill="rgba(196,96,58,0.4)"/>
+    <circle cx="1200" cy="400" r="1.5" fill="rgba(106,74,138,0.4)"/>
+    <circle cx="1220" cy="420" r="1" fill="rgba(106,74,138,0.3)"/>
 
-    <!-- Jasmine cluster 2 — right area -->
-    <g transform="translate(1050, 720)" opacity="0.65">
-      <path d="M 0 0 C -50 -30, -100 -20, -150 -50" fill="none" stroke="#3a6a3a" stroke-width="1.2"/>
-      <g transform="translate(0,0)">
-        <circle cx="0" cy="-7" r="3.5" fill="#f0ede8"/>
-        <circle cx="6.7" cy="-2.2" r="3.5" fill="#f0ede8"/>
-        <circle cx="4.1" cy="5.7" r="3.5" fill="#f0ede8"/>
-        <circle cx="-4.1" cy="5.7" r="3.5" fill="#f0ede8"/>
-        <circle cx="-6.7" cy="-2.2" r="3.5" fill="#f0ede8"/>
-        <circle cx="0" cy="0" r="2.8" fill="#fffce8"/>
-        <circle cx="0" cy="0" r="1.3" fill="#e8d060"/>
-      </g>
-      <g transform="translate(-80,-30)">
-        <circle cx="0" cy="-6" r="3" fill="#f0ede8"/>
-        <circle cx="5.7" cy="-1.9" r="3" fill="#f0ede8"/>
-        <circle cx="3.5" cy="4.9" r="3" fill="#f0ede8"/>
-        <circle cx="-3.5" cy="4.9" r="3" fill="#f0ede8"/>
-        <circle cx="-5.7" cy="-1.9" r="3" fill="#f0ede8"/>
-        <circle cx="0" cy="0" r="2.5" fill="#fffce8"/>
-        <circle cx="0" cy="0" r="1.2" fill="#e8d060"/>
-      </g>
-      <ellipse cx="-40" cy="-10" rx="7" ry="3.5" fill="#3a7a4a" opacity="0.6" transform="rotate(10,-40,-10)"/>
-    </g>
+    <!-- Fine grid lines - very subtle -->
+    <line x1="720" y1="0" x2="720" y2="900" stroke="rgba(253,246,237,0.02)" stroke-width="1"/>
+    <line x1="0" y1="450" x2="1440" y2="450" stroke="rgba(253,246,237,0.02)" stroke-width="1"/>
 
-    <!-- ═══════ ABSTRACT HUMAN SILHOUETTES — diverse, tasteful ═══════ -->
-    <!-- Three women, very abstract, warm strokes, different proportions -->
-    <!-- Woman 1 — centre, tallest -->
-    <g opacity="0.12">
-      <path d="M 720 880 C 718 800, 714 760, 716 720 C 718 680, 722 660, 720 630
-               C 718 600, 710 585, 710 560 C 710 535, 715 515, 718 490
-               C 720 465, 722 445, 720 420 C 718 395, 712 380, 712 355
-               C 712 325, 718 305, 720 280"
-        fill="none" stroke="#e8e6f0" stroke-width="24" stroke-linecap="round"/>
-      <!-- Shoulders -->
-      <path d="M 690 450 Q 720 440 750 450" fill="none" stroke="#e8e6f0" stroke-width="16" stroke-linecap="round"/>
-    </g>
-    <!-- Woman 2 — right of centre, different proportion -->
-    <g opacity="0.09">
-      <path d="M 860 900 C 856 800, 858 760, 862 720 C 866 680, 870 660, 868 630
-               C 866 600, 858 588, 858 565 C 858 540, 864 520, 866 498
-               C 868 472, 866 452, 862 428 C 858 404, 852 390, 852 365"
-        fill="none" stroke="#c97bb2" stroke-width="26" stroke-linecap="round"/>
-      <path d="M 830 470 Q 862 458 892 470" fill="none" stroke="#c97bb2" stroke-width="18" stroke-linecap="round"/>
-    </g>
-    <!-- Woman 3 — left of centre -->
-    <g opacity="0.08">
-      <path d="M 580 920 C 578 820, 576 778, 580 740 C 584 702, 588 682, 586 655
-               C 584 628, 576 615, 576 590 C 576 562, 582 542, 584 518"
-        fill="none" stroke="#7ec8c8" stroke-width="20" stroke-linecap="round"/>
-      <path d="M 558 555 Q 582 544 608 555" fill="none" stroke="#7ec8c8" stroke-width="14" stroke-linecap="round"/>
-    </g>
-
-    <!-- ═══════ PEACOCK FEATHER ELEMENTS ═══════ -->
-    <g transform="translate(420, 80)" opacity="0.4">
-      <!-- Feather spine -->
-      <path d="M 0 0 Q 20 80, 10 180" fill="none" stroke="#3a7a4a" stroke-width="1.5"/>
-      <!-- Feather barbs -->
-      <path d="M 4 40 Q 30 30, 50 20" fill="none" stroke="#3a7a8a" stroke-width="0.8"/>
-      <path d="M 7 60 Q 35 50, 55 40" fill="none" stroke="#3a7a8a" stroke-width="0.8"/>
-      <path d="M 9 80 Q 38 72, 56 62" fill="none" stroke="#3a7a8a" stroke-width="0.8"/>
-      <path d="M 4 40 Q -20 30, -40 22" fill="none" stroke="#7ec8c8" stroke-width="0.8"/>
-      <path d="M 7 60 Q -24 52, -42 44" fill="none" stroke="#7ec8c8" stroke-width="0.8"/>
-      <!-- Eye -->
-      <ellipse cx="55" cy="12" rx="12" ry="8" fill="none" stroke="#7ec8c8" stroke-width="1.2"/>
-      <ellipse cx="55" cy="12" rx="6" ry="4" fill="none" stroke="#3a4a8a" stroke-width="1"/>
-      <ellipse cx="55" cy="12" rx="2" ry="1.5" fill="#1a2a6a" opacity="0.6"/>
-    </g>
-
-    <!-- ═══════ SCATTERED STARS & DOTS ═══════ -->
-    <!-- Amber stars -->
-    <circle cx="500" cy="220" r="2" fill="#e8a45a" opacity="0.7"/>
-    <circle cx="520" cy="200" r="1.2" fill="#e8a45a" opacity="0.5"/>
-    <circle cx="480" cy="240" r="1.5" fill="#e8a45a" opacity="0.6"/>
-    <circle cx="540" cy="230" r="1" fill="#e8a45a" opacity="0.4"/>
-    <!-- Mauve stars -->
-    <circle cx="960" cy="300" r="2" fill="#c97bb2" opacity="0.7"/>
-    <circle cx="980" cy="280" r="1.3" fill="#c97bb2" opacity="0.5"/>
-    <circle cx="940" cy="320" r="1.6" fill="#c97bb2" opacity="0.6"/>
-    <circle cx="1000" cy="310" r="1" fill="#c97bb2" opacity="0.4"/>
-    <!-- Teal dots -->
-    <circle cx="700" cy="160" r="1.8" fill="#7ec8c8" opacity="0.6"/>
-    <circle cx="720" cy="140" r="1.2" fill="#7ec8c8" opacity="0.4"/>
-    <circle cx="680" cy="180" r="1.5" fill="#7ec8c8" opacity="0.5"/>
-    <!-- White sparkle dots -->
-    <circle cx="380" cy="520" r="1.5" fill="#e8e6f0" opacity="0.35"/>
-    <circle cx="1100" cy="650" r="1.5" fill="#e8e6f0" opacity="0.3"/>
-    <circle cx="820" cy="200" r="1.8" fill="#e8e6f0" opacity="0.25"/>
-    <circle cx="1320" cy="480" r="1.2" fill="#e8e6f0" opacity="0.3"/>
-    <circle cx="260" cy="180" r="1.5" fill="#e8e6f0" opacity="0.25"/>
-
-    <!-- ═══════ TRAILING VINES ═══════ -->
-    <path d="M 0 680 Q 80 620, 140 560 Q 200 500, 180 420"
-      fill="none" stroke="#2a5a3a" stroke-width="1" opacity="0.4" stroke-dasharray="5,12"/>
-    <path d="M 1440 750 Q 1360 680, 1300 600 Q 1240 520, 1260 440"
-      fill="none" stroke="#2a5a3a" stroke-width="1" opacity="0.35" stroke-dasharray="5,12"/>
-
-    <!-- Bottom gradient fade -->
-    <rect x="0" y="680" width="1440" height="220" fill="url(#bg)" opacity="0.7"/>
+    <!-- Bottom fade -->
+    <rect x="0" y="700" width="1440" height="200"
+      fill="url(#bg-grad)" opacity="0.5"/>
   </svg>
 
   <div class="cover-content">
-    <div class="cover-badge">Research &amp; Guide · May 2026</div>
+    <div class="cover-badge">
+      Research &amp; Guide · May 2026
+    </div>
     <h1>
       <em>The Uninformed Generation</em><br>
       <strong>A Case for Comprehensive<br>Sex Education in India</strong>
     </h1>
     <p class="cover-sub">A research-backed guide to sexual awareness, self-discovery, body image, and the systemic failure of India's sex education framework — written for the generation it failed most.</p>
     <div class="cover-pills">
-      <span class="cover-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Peer-reviewed sources
-      </span>
-      <span class="cover-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        NFHS-5 &amp; national data
-      </span>
-      <span class="cover-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-        Gender-split analysis
-      </span>
-      <span class="cover-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Written with love
-      </span>
+      <span class="cover-pill">📚 Peer-reviewed sources</span>
+      <span class="cover-pill">📊 NFHS-5 &amp; national data</span>
+      <span class="cover-pill">⚧ Gender-split analysis</span>
+      <span class="cover-pill">💛 Written with love</span>
     </div>
+    <p style="margin-top:22px; font-size:13px; color:rgba(253,246,237,0.65); letter-spacing:0.03em;">By <a href="https://reddit.com/u/Formerly_Shredacc" target="_blank" rel="noopener" style="color:rgba(253,246,237,0.9);text-decoration:underline;text-underline-offset:3px;">u/Formerly_Shredacc</a> &amp; <a href="https://reddit.com/u/whimsicalmeoww" target="_blank" rel="noopener" style="color:rgba(253,246,237,0.9);text-decoration:underline;text-underline-offset:3px;">u/whimsicalmeoww</a></p>
   </div>
 
   <div class="scroll-hint">
     <span>scroll</span>
-    <svg width="14" height="18" viewBox="0 0 16 20" fill="none">
+    <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
       <path d="M8 0v16M2 10l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
 </div>
 
+
+<div class="container" id="letter">
+  <div class="section-inner practical-section theme-terra" style="max-width:740px; margin:0 auto 0;">
+    <p class="section-label" style="text-align:center; letter-spacing:0.12em;">Before We Begin</p>
+    <h2 class="section-title" style="justify-content:center;">
+      <span class="section-icon">✉️</span>
+      A Letter
+    </h2>
+    <div class="divider"></div>
+
+    <p>The fact that you're here means something.</p>
+
+    <p>Maybe a friend sent this. Maybe you found it at 2am, phone brightness all the way down. Maybe you've been carrying questions for years and this is the first time you went looking. Maybe you don't even know what you're looking for — just that nobody gave you what you needed, and you're tired of not having it.</p>
+
+    <p>Here's the thing. You were supposed to have this information years ago. Not in a whisper. Not with a side of shame. Just — as fact. As something you were entitled to know about your own body. Nothing remarkable about it, because there's nothing remarkable about having a body that works the way yours does.</p>
+
+    <p>You weren't given that. It's not your fault.</p>
+
+    <p>So. This is the attempt to give it now.</p>
+
+    <p>You'll find real research here — actual studies, actual data — because you deserve evidence, not folk wisdom passed down through people who were also never taught anything. You'll also find the honest stuff. The practical stuff. The things that only get said when no one else is listening.</p>
+
+    <p>Some of what's here you'll already know. Some will be new. Some will be things you half-knew but never heard said plainly — and hearing them said plainly will feel like something loosening. Good. That's the point.</p>
+
+    <p>Read at your own pace. Skip around. Come back to it. No right way to use something that was written for the sole purpose of being useful to you.</p>
+
+    <div class="closing-warm">
+      <p>You're in the right place. Take a breath.</p>
+      <p class="sign">We're glad you're here. ❤️</p>
+    </div>
+  </div>
+</div>
+
+
 <!-- ═══════════════════════════════ TOC ═══════════════════════════════ -->
 <nav class="toc">
   <div class="toc-label">Contents</div>
   <ol>
+    <li><a href="#letter">A Letter Before We Begin</a></li>
     <li><a href="#s1">Executive Summary</a></li>
     <li><a href="#s2">State of Sex Education in India</a></li>
     <li><a href="#s3">Age of Sexual Awareness</a></li>
@@ -613,6 +1072,22 @@
     <li><a href="#s12">Self-Exploration: A Practical Guide</a></li>
     <li><a href="#s12b">Your First Orgasm: What Nobody Told You</a></li>
     <li><a href="#s12c">Safe Toy Usage &amp; Household Items</a></li>
+    <li><a href="#s16">The Hymen: Everything You Were Told Is Wrong</a></li>
+    <li><a href="#s17">Consent With Yourself</a></li>
+    <li><a href="#s18">Masturbation and Guilt</a></li>
+    <li><a href="#s19">Your First Gynaecologist Visit</a></li>
+    <li><a href="#s20">Arousal &amp; Lubrication</a></li>
+    <li><a href="#s21">Periods — Properly</a></li>
+    <li><a href="#s22">STIs — Just Health Information</a></li>
+    <li><a href="#s23">Contraception — What's Actually Available</a></li>
+    <li><a href="#s24">Your Body After Sex</a></li>
+    <li><a href="#s25">The Internet and Your Sexuality</a></li>
+    <li><a href="#s26">Pain During Exploration</a></li>
+    <li><a href="#s27">Grooming</a></li>
+    <li><a href="#s28">Talking to a Partner</a></li>
+    <li><a href="#s29">Finding Your Person</a></li>
+    <li><a href="#s30">Digital Safety</a></li>
+    <li><a href="#s31">Periods and Pleasure</a></li>
     <li><a href="#s13">Physical Development: A Visual Timeline</a></li>
     <li><a href="#s14">Same-Sex Relationships &amp; Experiences</a></li>
     <li><a href="#s15">Attraction, Identity &amp; the Space Between Labels</a></li>
@@ -626,7 +1101,7 @@
 <section id="s1">
   <div class="section-inner theme-sage">
     <p class="section-label">Section 1</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> Executive Summary</h2>
+    <h2 class="section-title"><span class="section-icon">📋</span> Executive Summary</h2>
     <div class="divider"></div>
 
     <p>India is home to the world's largest adolescent population — approximately <strong>253 million people</strong> between the ages of 10 and 19. Yet the country's formal sex education infrastructure is among the most fragmented and contested in the world. Children enter puberty with little to no reliable information, cobble together an understanding of their bodies from peers, pornography, and myth, and emerge into young adulthood carrying deep anxieties about sexuality, physical appearance, and relationships.</p>
@@ -663,7 +1138,7 @@
 <section id="s2">
   <div class="section-inner theme-amber">
     <p class="section-label">Section 2</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> The State of Sex Education in India</h2>
+    <h2 class="section-title"><span class="section-icon">🏫</span> The State of Sex Education in India</h2>
     <div class="divider"></div>
 
     <p>India has no single, mandated national sex education curriculum. The closest attempt — the <strong>Adolescent Education Programme (AEP)</strong>, co-launched in 2005 by the Ministry of Human Resource Development (MHRD) and the National AIDS Control Organisation (NACO) — was intended to reach 13–18-year-olds with age-appropriate information on reproductive health, gender, HIV, and relationships.</p>
@@ -712,7 +1187,7 @@
 <section id="s3">
   <div class="section-inner theme-rose">
     <p class="section-label">Section 3</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M2 22s4-2 6-8c2 6 6 8 6 8"/><path d="M12 22V10"/><path d="M12 10C12 6 15 3 20 2c0 5-3 8-8 8z"/><path d="M12 10C12 6 9 3 4 2c0 5 3 8 8 8z"/></svg></span> Age of Sexual Awareness: When Does It Begin?</h2>
+    <h2 class="section-title"><span class="section-icon">🌱</span> Age of Sexual Awareness: When Does It Begin?</h2>
     <div class="divider"></div>
 
     <p>Sexual awareness in children is not the same as sexual activity — it begins with puberty, body curiosity, and exposure to sexual information. In India, puberty is arriving earlier than previous generations: studies indicate that <strong>many girls begin puberty by age 9</strong>, and most boys by 10–12. Meanwhile, structured sex education — if it arrives at all — typically begins only in Class 8 (ages 13–14), creating a <strong>multi-year information vacuum</strong> at the most critical developmental window.</p>
@@ -766,7 +1241,7 @@
 <section id="s4">
   <div class="section-inner theme-blue">
     <p class="section-label">Section 4</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="#8a86a8"/></svg></span> Sources of Sexual Information: Who Fills the Void?</h2>
+    <h2 class="section-title"><span class="section-icon">📡</span> Sources of Sexual Information: Who Fills the Void?</h2>
     <div class="divider"></div>
 
     <p>When schools and parents fail to provide accurate information, adolescents turn elsewhere. Research consistently identifies <strong>peers and the internet</strong> as the dominant sources of sexual knowledge for Indian youth — neither of which is curated, age-appropriate, or accurate.</p>
@@ -813,7 +1288,7 @@
 <section id="s5">
   <div class="section-inner theme-violet">
     <p class="section-label">Section 5</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span> Self-Exploration: Who, When, and How</h2>
+    <h2 class="section-title"><span class="section-icon">🔍</span> Self-Exploration: Who, When, and How</h2>
     <div class="divider"></div>
 
     <p>Self-exploration — including masturbation — is a developmentally normal part of adolescent sexual development worldwide. In India, it occurs widely but in near-total silence: no education, no normalisation, and in many cases, active shame. The data shows a sharp gender disparity in both prevalence and emotional experience.</p>
@@ -886,7 +1361,7 @@
 <section id="s6">
   <div class="section-inner theme-terra">
     <p class="section-label">Section 6</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> First Sexual Experiences</h2>
+    <h2 class="section-title"><span class="section-icon">💬</span> First Sexual Experiences</h2>
     <div class="divider"></div>
 
     <p>Data on first sexual intercourse in India is complex: it is shaped heavily by marriage patterns, urban/rural divides, and significant under-reporting — especially among women, for whom premarital sex carries greater social risk. The most reliable data comes from the <strong>National Family Health Survey (NFHS-5, 2019–21)</strong> and the <strong>UDAYA survey</strong>.</p>
@@ -956,7 +1431,7 @@
 <section id="s7">
   <div class="section-inner theme-rose">
     <p class="section-label">Section 7</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="17" rx="6"/><path d="M12 19v3"/><path d="M9 22h6"/></svg></span> Body Image & Physical Insecurities</h2>
+    <h2 class="section-title"><span class="section-icon">🪞</span> Body Image & Physical Insecurities</h2>
     <div class="divider"></div>
 
     <p>Without education about what bodies look like, what is normal, and the extraordinary variation in human anatomy, adolescents develop their reference points from peers, media, and pornography. The result is widespread insecurity about bodies — shaped differently by gender, but uniformly by silence.</p>
@@ -1044,7 +1519,7 @@
 <section id="s8">
   <div class="section-inner theme-violet">
     <p class="section-label">Section 8</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg></span> Psychological Consequences of the Information Vacuum</h2>
+    <h2 class="section-title"><span class="section-icon">🧠</span> Psychological Consequences of the Information Vacuum</h2>
     <div class="divider"></div>
 
     <p>The costs of inadequate sex education are not abstract — they are measurable. Research documents elevated rates of shame, anxiety, depression, and sexual dysfunction among Indian young people that can be directly linked to information poverty during adolescence.</p>
@@ -1079,7 +1554,7 @@
 <section id="s9">
   <div class="section-inner theme-sage">
     <p class="section-label">Section 9</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/><line x1="12" y1="2" x2="12" y2="4"/></svg></span> Recommendations: Building a Better Framework</h2>
+    <h2 class="section-title"><span class="section-icon">🛤️</span> Recommendations: Building a Better Framework</h2>
     <div class="divider"></div>
 
     <p>The evidence is unambiguous: Indian adolescents need, want, and will benefit from comprehensive, age-appropriate sex education. What does that actually look like? Drawing from international best practice and India-specific research, the following framework is proposed.</p>
@@ -1138,7 +1613,7 @@
 <section id="s10">
   <div class="section-inner theme-blue">
     <p class="section-label">Section 10</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M21 6H3a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/><line x1="7" y1="10" x2="7" y2="14"/><line x1="11" y1="10" x2="11" y2="12"/><line x1="15" y1="10" x2="15" y2="14"/><line x1="19" y1="10" x2="19" y2="12"/></svg></span> Genital Development: What Does Normal Actually Look Like?</h2>
+    <h2 class="section-title"><span class="section-icon">📏</span> Genital Development: What Does Normal Actually Look Like?</h2>
     <div class="divider"></div>
 
     <p>One of the most direct causes of genital insecurity in adolescence is having no frame of reference. Without education, the only comparisons available are pornography (which selects for extremes), peer boasting (which inflates), and cultural myth (which distorts). This section presents what the clinical and population data actually show — for Indian adolescents specifically — across the stages of puberty.</p>
@@ -1298,7 +1773,7 @@
 <section id="s11">
   <div class="section-inner theme-terra">
     <p class="section-label">Section 11</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/><circle cx="4.93" cy="8" r="1" fill="#8a86a8"/><circle cx="4.93" cy="16" r="1" fill="#8a86a8"/><circle cx="12" cy="4" r="1" fill="#8a86a8"/><circle cx="19.07" cy="8" r="1" fill="#8a86a8"/><circle cx="19.07" cy="16" r="1" fill="#8a86a8"/><circle cx="12" cy="20" r="1" fill="#8a86a8"/></svg></span> The Diversity Wall: Every Body Is Normal</h2>
+    <h2 class="section-title"><span class="section-icon">🎨</span> The Diversity Wall: Every Body Is Normal</h2>
     <div class="divider"></div>
 
     <p>What follows is a visual celebration of real anatomical diversity — illustrated in the tradition of body-positive education used across Scandinavia, the Netherlands, and Germany, and inspired by projects like Jamie McCartney's <em>Great Wall of Vagina</em>. The purpose is simple: to show that bodies come in extraordinary variety, and every single one of them is normal.</p>
@@ -1339,7 +1814,7 @@
 <section id="s12">
   <div class="section-inner practical-section theme-rose">
     <p class="section-label">Section 12</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></span> Self-Exploration: A Practical, Shame-Free Guide</h2>
+    <h2 class="section-title"><span class="section-icon">💡</span> Self-Exploration: A Practical, Shame-Free Guide</h2>
     <div class="divider"></div>
 
     <p>Self-exploration — learning what your own body feels, how it responds, and what brings comfort or pleasure — is a healthy, normal, and important part of understanding yourself. It is not dirty, sinful, or harmful. It does not cause weakness, hair loss, blindness, infertility, or any of the myths commonly circulated in India. This section provides practical, evidence-based guidance — the kind that should be in every school curriculum but rarely is.</p>
@@ -1435,7 +1910,7 @@
 <section id="s12b">
   <div class="section-inner practical-section theme-terra">
     <p class="section-label">Section 12b</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></span> Your First Orgasm: What Nobody Told You</h2>
+    <h2 class="section-title"><span class="section-icon">🌊</span> Your First Orgasm: What Nobody Told You</h2>
     <div class="divider"></div>
 
     <p>Let me start with something important.</p>
@@ -1544,7 +2019,7 @@
 <section id="s12c">
   <div class="section-inner practical-section theme-violet">
     <p class="section-label">Section 12c</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M12 22a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M6 22a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><line x1="9" y1="11" x2="9" y2="15"/><line x1="12" y1="11" x2="12" y2="15"/></svg></span> Safe Toy Usage — A Practical Guide for People With Zero Privacy</h2>
+    <h2 class="section-title"><span class="section-icon">🛒</span> Safe Toy Usage — A Practical Guide for People With Zero Privacy</h2>
     <div class="divider"></div>
 
     <p>Let's get one thing out of the way first.</p>
@@ -1664,12 +2139,797 @@
 </section>
 
 
+
+<section id="s16">
+  <div class="section-inner practical-section theme-rose">
+    <p class="section-label">Section 16</p>
+    <h2 class="section-title">
+      <span class="section-icon">🌸</span>
+      The Hymen: Everything You Were Told Is Wrong
+    </h2>
+    <div class="divider"></div>
+
+    <p>Someone told you your hymen is proof of something. Probably several someones.</p>
+    <p>That it's a seal. That it breaks the first time. That there'll be blood, and that blood is evidence of something intact that no longer is.</p>
+    <p>Almost none of that is true. The fact that you were told it — by family, by culture, possibly by a doctor — is their failure, not yours.</p>
+    <p>Here's what's actually true.</p>
+
+    <h3>What the hymen actually is</h3>
+    <p>A thin, flexible fold of tissue that partially covers the vaginal opening. <em>Partially.</em> Not a seal. Not a barrier. It has a natural opening from birth — because without one, menstrual blood would have nowhere to go.</p>
+    <p>It varies enormously between people. More tissue, less tissue, barely visible by puberty, looks nothing like the diagrams. All normal. The hymen has more anatomical variation than almost anything else in the body.</p>
+    <p>The rarest variant — an imperforate hymen with no opening — is a medical condition diagnosed in childhood when periods can't flow. If you've ever had a period, you don't have it. You'd already know.</p>
+
+    <h3>The bleeding myth</h3>
+    <p>The idea that first intercourse always causes bleeding — and that bleeding proves virginity — is false.</p>
+    <p>Multiple studies across different populations consistently find that more than half of women report no bleeding at all during first penetrative sex. Presence or absence of bleeding tells you nothing reliable about prior sexual activity. Nothing.</p>
+    <p>What causes bleeding when it does happen? Not a hymen "breaking." Usually insufficient lubrication, muscle tension from anxiety, or friction. The same things that can cause discomfort at any point in your sexual life.</p>
+    <p>The hymen doesn't break. It stretches. For most people it wears gradually over time — exercise, tampons, cycling — long before any sexual experience. By the time many women first have sex, there's barely any tissue left to detect.</p>
+
+    <h3>Virginity testing</h3>
+    <div class="callout warning">
+      <p><strong>⚠ This is pseudoscience — know your rights</strong></p>
+      <p>The "two-finger test" — inserting fingers to assess whether the vaginal opening is "loose" — has no medical basis. There is no relationship between vaginal opening size and sexual history. None.</p>
+      <p>The WHO, UNICEF, and UN Women called for a global ban in 2018. No scientific validity. Human rights violation. Every major medical body that has reviewed it agrees.</p>
+      <p>If anyone pressures you to submit to this — family, prospective in-laws, anyone — you're being asked to undergo something medically meaningless and ethically indefensible. A doctor who performs it is doing bad medicine. You are allowed to refuse. You are allowed to know that.</p>
+    </div>
+
+    <h3>The practical upshot</h3>
+    <p>Your hymen is not a record. Tampons don't "take" your virginity. Sports don't. Masturbation doesn't. Sex, when and if you choose to have it, won't leave detectable evidence for anyone to find.</p>
+    <p>Your body is not a document to be inspected. It doesn't owe anyone proof of anything.</p>
+
+    <div class="closing-warm">
+      <p>The mythology was never about your body. It was about control. Your body, meanwhile, is just doing its thing. Quietly indifferent to what anyone thinks it needs to prove.</p>
+      <p class="sign">You're fine, babe. ❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s17">
+  <div class="section-inner practical-section theme-violet">
+    <p class="section-label">Section 17</p>
+    <h2 class="section-title">
+      <span class="section-icon">💭</span>
+      Consent With Yourself
+    </h2>
+    <div class="divider"></div>
+
+    <p>This one is harder than it sounds.</p>
+    <p>You know the version you were told. You can stop at any time. Your body, your choice. True. And almost none of it covers what actually happens when something doesn't feel right and you keep going anyway.</p>
+    <p>Let's talk about that.</p>
+
+    <h3>The freeze response</h3>
+    <p>Your nervous system has three automatic responses to discomfort: fight, flight, and freeze. The third one doesn't get explained.</p>
+    <p>Freeze is not a decision. It's physiological — your nervous system pausing, shutting down voluntary action, waiting for a signal. It happens before your conscious mind catches up. Goes still. Goes blank. Goes somewhere else in your head while your body stays put.</p>
+    <p>Research on sexual assault consistently finds that freeze is far more common than people expect. More than two thirds of women who experienced assault reported significant tonic immobility during it. They didn't fight back. They didn't run. They froze. Many spent years afterwards asking: why didn't I do something?</p>
+    <p>Because their nervous system did something. It froze. Not failure. Biology.</p>
+    <p>This matters even in solo exploration. When something doesn't feel right — a sensation you weren't ready for, a direction that suddenly feels wrong — your body may freeze before you've registered the discomfort. You might keep going. Not because you want to. Because the stop signal hasn't arrived yet.</p>
+
+    <div class="warm-note">
+      Noticing this is the skill.
+    </div>
+
+    <h3>"I didn't say no" is not the same as yes</h3>
+    <p>Plainly: not stopping is not consent. Staying quiet is not consent. Going along is not consent.</p>
+    <p>Consent is active. Present. Your whole self participating — not your body tolerating something while your mind is elsewhere.</p>
+    <p>This applies between people. It also applies between you and yourself.</p>
+    <p>You've been trained to accommodate. To adjust. To not make a fuss. If you grew up in an Indian household — most Indian households — this wasn't an accident. Girls learn early that the smooth running of family life requires their cooperation. You smile when you don't want to. You eat what's served. You say it's fine when it isn't.</p>
+    <p>These add up. They become a default: discomfort enters, and instead of acting on it, you wait for it to pass.</p>
+    <p>Bringing that into your relationship with your own body means you can end up accommodating yourself. Finishing something because stopping feels like failure. Pushing through discomfort because you don't quite believe you're allowed to stop.</p>
+    <p>You are. Always. No explanation owed to anyone, including yourself.</p>
+
+    <h3>When you only know afterwards</h3>
+    <p>Sometimes you finish something and something feels off. Not catastrophic — just a flatness. A wish you'd done something differently.</p>
+    <p>THAT is not a verdict on you. That's your body giving you information.</p>
+    <p>The useful response is curiosity, not punishment. Was there a moment you could have stopped and didn't? Was it habit, momentum, pressure you'd put on yourself? You don't need answers. Just pay attention. Learn what "yes" actually feels like in your body — not the absence of resistance, but genuine forward motion. So you can start to tell the difference.</p>
+    <p>Not a switch. A dial. The accommodation reflex is deep but it's learnable. And the safest place to learn it is alone, with no one else's needs in the room.</p>
+
+    <div class="closing-warm">
+      <p>Your body's signals are information, not inconvenience. Probably more honest than anyone's been with you in a long time.</p>
+      <p class="sign">You get to honour that. Starting now. ❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s18">
+  <div class="section-inner practical-section theme-violet">
+    <p class="section-label">Section 18</p>
+    <h2 class="section-title">
+      <span class="section-icon">💜</span>
+      Masturbation and Guilt
+    </h2>
+    <div class="divider"></div>
+
+    <p>Look — the guilt is going to show up. Even when you know better. Even after reading this.</p>
+    <p>That's not you being broken. That's how deep the conditioning runs. You absorbed it before you were old enough to question it. That's on them, not you.</p>
+    <p>Here's what's actually happening when it does.</p>
+
+    <h3>Why guilt shuts arousal down</h3>
+    <p>Your nervous system runs in two modes. One is for safety and rest. One is for threat and stress. Arousal needs the first one — a state where the body feels okay to let its guard down.</p>
+    <p>Guilt activates the second. Your nervous system doesn't distinguish between an external threat and an internal one. Shame, guilt, the sense that what you're doing is wrong — all register as threat signals. Arousal falls away. Sometimes shuts down completely.</p>
+    <p>This is why "just relax" is useless advice. You can't consciously override a threat response. The body doesn't take instructions from the part of your brain that knows better.</p>
+
+    <div class="warm-note">
+      THAT is not a moral failing. That's physiology.
+    </div>
+
+    <h3>Where the guilt came from</h3>
+    <p>Nobody is born ashamed of their body. That's learned.</p>
+    <p>In the Indian context it comes from everywhere — religious teachings, family comments, the way certain topics get changed when you walk into a room, films where the good woman is desireless until marriage and the bad one isn't. The message, from a hundred directions: your value is tied to your sexual restraint. Your purity is something you can lose.</p>
+    <p>Wasn't designed for your wellbeing. Designed for control — specifically, to keep women's sexuality within structures that served everyone else. That's not cynicism. That's just history.</p>
+    <p>The guilt is a conditioned reflex. You absorbed it the way you absorbed everything else. It is not a reflection of some deeper truth about what you're doing. Reflexes can be unlearned.</p>
+
+    <h3>The spiral</h3>
+    <p>Arousal. Guilt. Guilt suppresses arousal. Frustration. Guilt about the frustration. Sometimes guilt about having wanted it in the first place. Everything shuts down. You feel worse than when you started.</p>
+    <p>Familiar? You're not broken. This is exactly the spiral the conditioning was designed to create.</p>
+
+    <h3>What to actually do</h3>
+    <p>Not "just accept yourself." That sounds like something and means nothing.</p>
+    <p>What actually works: let the guilt arrive. Don't fight it and don't obey it. Notice it — <em>there you are again</em> — and then do what you actually want, not what the guilt is telling you.</p>
+    <p>Conditioned responses lose power through neutral repetition. Every time you notice the guilt and don't treat it as an instruction, you're doing the work. Not eliminating it immediately — that's not how it works. Just giving it a little less authority than last time.</p>
+    <p>Not a switch. A dial. The direction is always the same.</p>
+    <p>One more thing. The guilt might tell you your desire itself is the problem. It isn't. Your desire is involuntary — you didn't choose it, can't suppress it, and it says nothing about your character. The narrative that says otherwise was invented by people who needed you controllable. You don't owe them that.</p>
+
+    <div class="closing-warm">
+      <p>The guilt is loud right now. It will get quieter. Not a character test — just your nervous system learning something it was never taught. Give it time.</p>
+      <p class="sign">You got this. ❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s19">
+  <div class="section-inner practical-section theme-blue">
+    <p class="section-label">Section 19</p>
+    <h2 class="section-title">
+      <span class="section-icon">🏥</span>
+      Your First Gynaecologist Visit
+    </h2>
+    <div class="divider"></div>
+
+    <p>Most of the fear is about not knowing what's going to happen. Once you know, it's a much smaller deal.</p>
+    <p>So let's go through it.</p>
+
+    <h3>When to go</h3>
+    <p>You don't need a problem to justify it. Turned 18? You can go. Sexually active? You should — not because something's wrong, but because meeting a doctor while everything is fine means you're not navigating a stranger for the first time when you're scared.</p>
+    <p>Go sooner if you have: discharge that's changed in colour, smell, or consistency. Period pain getting worse over time. Cycles consistently irregular for more than a few months. Any concern about STIs. Any interest in contraception.</p>
+
+    <h3>What actually happens</h3>
+    <p>You'll answer questions — medical history, medications, when your last period was. Someone will ask if you're sexually active. Answer honestly. Adult patients in India have the right to confidentiality — a doctor cannot share your information with your parents without your consent once you're 18. If you're worried, ask directly before you start: <em>"Is this conversation confidential?"</em> A good doctor confirms it is. Some in smaller or more conservative settings do violate this in practice — worth knowing so you can decide how much to share, and where.</p>
+    <p>The exam:</p>
+    <ul>
+      <li><strong>External exam.</strong> Doctor looks at the vulva, checks everything looks normal. That's it. Looking.</li>
+      <li><strong>Speculum exam.</strong> A small duck-billed device — metal or plastic — that goes in, opens slightly, lets the doctor see the cervix. Looks alarming in pictures. In practice, pressure not pain, if you're relaxed. Haven't used tampons or had penetrative sex? Say so before it starts — they'll use a smaller one. Breathe out slowly through your mouth during insertion. That's the actual tip. Use it.</li>
+      <li><strong>Bimanual exam.</strong> Two gloved fingers inside, other hand pressing gently on your lower abdomen. Checking the uterus and ovaries — size, position, tenderness. Slightly uncomfortable. Brief.</li>
+      <li><strong>Swabs</strong> if needed — cotton swab from inside the vagina or cervix. You barely feel most of these.</li>
+    </ul>
+
+    <h3>What you're allowed to ask</h3>
+    <p>Everything. Literally everything.</p>
+    <p>Ask what they're doing before they do it. Ask them to stop at any point. Ask about contraception, discharge, whether something looks normal. Ask "is this okay?" about any part of your body. This is the job.</p>
+    <p>Ask for a female doctor if you want one. Normal request. You don't need to explain yourself.</p>
+
+    <h3>Finding one who won't make you feel judged</h3>
+    <p>Some gynaecologists will have opinions about unmarried sexually active women. Those opinions are not your problem. If a doctor makes you feel judged for anything, find a different one. Not being difficult. Basic self-advocacy.</p>
+    <p>Practically: ask trusted friends privately. r/AskIndianWomen has threads on this worth searching. Younger female gynaecologists in urban clinics tend to be better on this. Teaching hospitals attached to medical colleges are often more neutral — they've seen everything.</p>
+
+    <div class="warm-note">
+      You are not asking for a favour when you go. You are a patient seeking healthcare you're entitled to. The doctor works for you, not the other way around.
+    </div>
+
+    <div class="closing-warm">
+      <p>First appointment is the hardest. Second one is just Tuesday.</p>
+      <p class="sign">You've got this. ❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s20">
+  <div class="section-inner practical-section theme-blue">
+    <p class="section-label">Section 20</p>
+    <h2 class="section-title">
+      <span class="section-icon">🌊</span>
+      Arousal &amp; Lubrication
+    </h2>
+    <div class="divider"></div>
+
+    <p>Your body is not always going to give you a straight answer about what it wants. That surprises people. We grow up thinking physical response is a reliable readout of desire — wet means yes, dry means no. It doesn't work like that.</p>
+    <p>Here's how it actually works.</p>
+
+    <h3>What lubrication actually is</h3>
+    <p>Increased blood flow to the vaginal walls causes fluid to seep through. Reduces friction, keeps tissue healthy, makes penetration comfortable. It's triggered by physical stimulation — touch, pressure, friction. Can also be triggered by visual or psychological arousal. But the trigger mechanism is largely automatic. Doesn't require conscious desire. Doesn't require consent. Responds to input the same way your mouth waters when you smell food you don't actually want.</p>
+
+    <h3>Non-concordance — the part nobody explains</h3>
+    <p>Sexual non-concordance is when physical arousal and subjective desire don't match. Meredith Chivers at Queen's University has done some of the most important research on this. The finding: women show significantly higher rates of non-concordance than men. Physical response and reported desire line up only around 10% of the time in women, versus roughly 50% in men.</p>
+    <p>What this means:</p>
+    <ul>
+      <li><strong>You can be physically aroused without wanting what's happening.</strong> Lubrication, swelling, sensitivity — these can occur in response to sexual stimulation even when you're not turned on, even when you're uncomfortable, even when you're scared. Your body producing a physical response does not mean you wanted it. Not a contradiction. Documented physiology.</li>
+      <li><strong>You can genuinely want something and have your body not cooperate.</strong> Stress, anxiety, distraction, medication, hormonal changes — all of these can suppress physical arousal even when desire is present. Also not a contradiction. Also documented physiology.</li>
+    </ul>
+    <p>Both are normal. Neither is your body lying to you. Physical response and desire run on partially separate systems that don't always sync.</p>
+
+    <h3>Why this matters</h3>
+    <p>If you've ever felt confused or ashamed because your body responded physically to something you didn't want — this is why. Your body was not giving consent on your behalf. It was responding to physical input the way it's built to. That response says nothing about what you wanted.</p>
+    <p>If you've ever been mentally ready but physically nothing was happening — also this. Physical arousal needs conditions. Relaxation, time, the right stimulation. Desire alone doesn't produce it on command.</p>
+
+    <h3>Practical notes on lubrication</h3>
+    <p>Natural lubrication varies between people and across your cycle. Lower around your period when oestrogen is lower. Higher around ovulation. Normal variation, not a sign anything's wrong.</p>
+    <p>Using additional lubricant is not a failure or an admission of anything. It's practical. Water-based or silicone-based. Not oil-based if you're using condoms — oil degrades latex.</p>
+    <p>Consistently dry regardless of where you are in your cycle? Mention it to a doctor. Often hormonal, often easily addressed.</p>
+
+    <div class="closing-warm">
+      <p>Your body is doing its job. It just doesn't always read the same memo as your brain at the same time. That's not dysfunction — that's just the system being more complicated than anyone told you. Now you know.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s21">
+  <div class="section-inner practical-section theme-rose">
+    <p class="section-label">Section 21</p>
+    <h2 class="section-title">
+      <span class="section-icon">🌙</span>
+      Periods — Properly
+    </h2>
+    <div class="divider"></div>
+
+    <p>You probably got one talk. Maybe from your mother, maybe from a school teacher who clearly wanted to be elsewhere. You were shown a pad and that was largely it.</p>
+    <p>Not enough. Here's what you actually need to know.</p>
+
+    <h3>What a normal cycle looks like</h3>
+    <p>The 28-day cycle is an average, not a rule. Normal is anywhere between 21 and 35 days — measured from the first day of one period to the first day of the next. Shorter than 21 or longer than 35, consistently, is worth mentioning to a doctor.</p>
+    <p>Periods last between 2 and 7 days. Flow varies enormously between people and across your life — lighter when stressed, heavier at certain points, different after illness, different in your 20s than your 30s.</p>
+    <p>Your cycle has four phases:</p>
+    <ul>
+      <li><strong>Menstrual</strong> — the period itself. Oestrogen and progesterone both low. Uterine lining sheds.</li>
+      <li><strong>Follicular</strong> — starts day one of your period, runs until ovulation. Oestrogen rises. Energy improves. Most people feel clearest-headed and most social here.</li>
+      <li><strong>Ovulation</strong> — roughly mid-cycle. A hormone surge triggers release of an egg. Some people feel a mild twinge on one side (mittelschmerz). Some notice increased libido, slightly different cervical fluid — clearer, more slippery.</li>
+      <li><strong>Luteal</strong> — post-ovulation until your next period. Progesterone rises then drops. PMS territory — mood shifts, bloating, fatigue, breast tenderness, food cravings. Physiological, not imaginary. Intensity varies significantly between people.</li>
+    </ul>
+    <p>Tracking your cycle for a few months tells you what <em>your</em> normal looks like. That's the goal — not matching a textbook, knowing your own pattern.</p>
+
+    <h3>What isn't normal</h3>
+    <p>This is the part that matters most. Indian women are raised to normalise period pain. The cultural message: this is just how it is, adjust, don't complain. That message has caused real harm. So let's be specific.</p>
+    <p>Get checked if you have:</p>
+    <ul>
+      <li><strong>Severe pain.</strong> Mild cramping in the first day or two — normal. Pain that stops you going to work or college, pain that requires you to stay in bed, pain that doesn't respond to standard painkillers — not normal. Not something to push through. A symptom.</li>
+      <li><strong>Bleeding that soaks through a pad or tampon every hour for several consecutive hours.</strong></li>
+      <li><strong>Bleeding between periods.</strong> Spotting around ovulation is common. Unexpected bleeding at other points warrants investigation.</li>
+      <li><strong>Cycles that have suddenly become irregular</strong> after being regular, or vice versa.</li>
+      <li><strong>No period for three or more months</strong> when not pregnant. Causes range from stress to hormonal conditions. Worth finding out which.</li>
+    </ul>
+
+    <h3>PCOS — why it goes undiagnosed for years</h3>
+    <p>Polycystic ovary syndrome involves elevated androgens, irregular ovulation, and often small follicles on the ovaries. Affects roughly 1 in 5 Indian women. Massively underdiagnosed.</p>
+    <p>Symptoms: irregular periods, excess hair growth on face or body, acne that doesn't respond normally to treatment, difficulty losing weight, fatigue. Not every person has all of these. Some have one or two, mildly.</p>
+    <p>Why it goes undiagnosed: symptoms get normalised. Irregular periods get blamed on stress for years. Excess hair gets threaded instead of investigated. Nobody connects the dots until something forces a check — often a fertility concern.</p>
+    <p>Why it matters to catch early: untreated PCOS increases long-term risk of type 2 diabetes and cardiovascular disease. Early diagnosis means early management before downstream effects compound.</p>
+    <p>Diagnosis: blood panel plus ultrasound. If those symptoms sound like you, ask for both.</p>
+
+    <h3>Endometriosis — the most underdiagnosed condition you've probably never heard explained</h3>
+    <p>Endometriosis is when tissue similar to the uterine lining grows outside the uterus — on ovaries, fallopian tubes, bowel, bladder. It responds to hormonal cycles the same way: thickens, has nowhere to shed. The result: inflammation, adhesions, significant pain.</p>
+    <p>Average time to diagnosis globally: 7 to 10 years. In India, likely longer.</p>
+    <p>Why: period pain gets normalised. Girls are told severe cramping is just how periods are. Doctors sometimes reinforce this. A condition causing serious progressive harm goes uninvestigated for years.</p>
+    <p>Symptoms to take seriously: period pain that is severe and getting worse over time. Pain during sex. Pain during bowel movements during your period. Heavy bleeding. Persistent fatigue. You don't need all of these. One of them, consistently, is enough to ask about.</p>
+    <p>No blood test for endometriosis. Definitive diagnosis requires laparoscopy — a minor surgical procedure. Start by telling a doctor what you're experiencing and having them take it seriously. If they don't, find one who will.</p>
+
+    <h3>Period poverty</h3>
+    <p>A significant number of girls in India manage periods without adequate products. In many parts of the country periods are still considered polluting, limiting where girls can go and what they can do. Girls miss school. Women miss work.</p>
+    <p>If you have options, know what they are beyond disposable pads:</p>
+    <ul>
+      <li><strong>Menstrual cups</strong> — medical-grade silicone, reusable for years, collect rather than absorb. Learning curve of a few cycles. After that — cheaper, less wasteful, more convenient for many people.</li>
+      <li><strong>Reusable cloth pads</strong> — washable, cost-effective, gentler for people who get irritation from disposables.</li>
+      <li><strong>Period underwear</strong> — absorbent, washable. More expensive upfront but durable.</li>
+    </ul>
+    <p>None of these are lesser options. They're often better ones.</p>
+
+    <h3>How to track usefully</h3>
+    <p>App or a note on your phone. Track: start date, end date, flow (light/medium/heavy), pain intensity, mood, anything you notice.</p>
+    <p>Three months in, you'll have your baseline. You'll know your actual cycle length, your normal flow, which phase makes you feel best, when to expect the rough days. Useful for you, invaluable for a doctor if anything changes.</p>
+    <p>Apps: Clue is the most privacy-forward — they've committed to not sharing data with third parties. Flo is more feature-rich but has had privacy concerns. Either way — period data is sensitive health information. Treat it accordingly.</p>
+
+    <div class="closing-warm">
+      <p>Your period is not a punishment. Not proof of anything. It's your body running a system it runs reliably for decades. It deserves to be understood. You understand it better now than most people do.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s22">
+  <div class="section-inner practical-section theme-amber">
+    <p class="section-label">Section 22</p>
+    <h2 class="section-title">
+      <span class="section-icon">🔬</span>
+      STIs — Just Health Information
+    </h2>
+    <div class="divider"></div>
+
+    <p>An STI is an infection. Like a respiratory infection, a gut infection, a skin infection. It's a thing your body can get through contact with another body. It says nothing about you as a person, your worth, or whether your choices are right or wrong. Health matter. Treating it like one.</p>
+    <p>The reason this needs saying plainly: shame is the single biggest barrier to testing, and untreated STIs cause real harm. Not because you deserve harm — because infections left unaddressed progress.</p>
+
+    <h3>The common ones</h3>
+    <ul>
+      <li><strong>HPV</strong> is the most common STI in the world. Most sexually active people will have at least one strain at some point. Most cases clear on their own. Some strains cause genital warts. A small number of high-risk strains, undetected over many years, can progress to cervical cancer — which is exactly why Pap smears and HPV testing exist. The HPV vaccine (Gardasil, Cervarix) protects against the highest-risk strains. Available in India. Worth asking about.</li>
+      <li><strong>Chlamydia</strong> — bacterial, extremely common, frequently no symptoms. Left untreated, can cause pelvic inflammatory disease and affect fertility. Treated with a course of antibiotics. Straightforward.</li>
+      <li><strong>Gonorrhea</strong> — also bacterial, also often symptomless in women. Treatable, though antibiotic-resistant strains are increasingly common globally — which makes early testing more important, not less.</li>
+      <li><strong>Herpes (HSV-1 and HSV-2)</strong> — viral, lives in nerve tissue, causes periodic outbreaks of sores. Lifelong but manageable. Antiviral medication reduces outbreak frequency and transmission risk. Far more common than stigma suggests — WHO estimates around 11% of adults globally carry HSV-2. Many people who have it don't know they do.</li>
+      <li><strong>Syphilis</strong> — bacterial, progresses in stages, highly treatable in early stages with penicillin. Early symptoms include painless sores that are easy to miss.</li>
+      <li><strong>HIV</strong> — viral, attacks the immune system, fully manageable with antiretroviral therapy. People on treatment live long healthy lives, and with undetectable viral load cannot transmit the virus sexually (Undetectable = Untransmittable, U=U). Earlier caught, better outcomes.</li>
+    </ul>
+
+    <h3>How transmission actually works</h3>
+    <p>Most STIs spread through skin-to-skin genital contact, mucous membrane contact, or bodily fluids. Not through casual contact, shared toilets, hugging, shared food. You cannot get an STI from a toilet seat. You cannot get HIV from sharing food.</p>
+    <p>Condoms significantly reduce transmission risk for most STIs but don't eliminate it for those spread through skin contact (herpes, HPV). Reason to know your status and your partner's — not a reason for despair.</p>
+
+    <h3>Testing — what it actually looks like</h3>
+    <p>Urine sample or vaginal swab covers chlamydia and gonorrhea. Blood tests cover HIV, syphilis, and herpes. HPV detected through a Pap smear or HPV co-test.</p>
+    <p>In India: government hospitals, private clinics, and FPAI (Family Planning Association of India) clinics in multiple cities offer confidential sexual health services. At a general physician, you can request specific tests by name — "I'd like to be tested for chlamydia and gonorrhea" is a complete sentence a doctor should respond to without drama.</p>
+    <p>You can ask for confidential testing. You are entitled to it.</p>
+    <p>How often: if you're sexually active with new or multiple partners, once a year is reasonable. After any unprotected sex with a new partner, sooner.</p>
+
+    <h3>Treatment</h3>
+    <p>Bacterial STIs — treatable with antibiotics. Caught early, they resolve. Viral STIs — manageable with medication. None of this is a life sentence. None of it is a moral verdict.</p>
+    <p>What makes outcomes worse: not testing, not treating, and carrying shame that gets in the way of both.</p>
+
+    <div class="warm-note">
+      A positive result is not punishment. It's information — the kind that lets you get treated, protect people you care about, and move forward with facts instead of fear.
+    </div>
+
+    <div class="closing-warm">
+      <p>Nothing shameful about a body that can get infections. Nothing shameful about getting tested. The only thing shame does here is delay care. You know better now.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s23">
+  <div class="section-inner practical-section theme-sage">
+    <p class="section-label">Section 23</p>
+    <h2 class="section-title">
+      <span class="section-icon">🛡️</span>
+      Contraception — What's Actually Available
+    </h2>
+    <div class="divider"></div>
+
+    <p>This section assumes you're an adult who can decide what goes into your own body. Because you are.</p>
+    <p>More options than condoms and hoping for the best. Here's what exists, what each one does, how to access it in India, and — because it comes up — how to handle a partner who has opinions about your choices.</p>
+
+    <h3>External condoms</h3>
+    <p>Worn on a penis during sex. Used correctly and consistently: around 98% effective. Typical use — the occasional error — closer to 87%. The gap between perfect and typical is where most unintended pregnancies happen.</p>
+    <p>Also the only method that provides meaningful protection against STIs. Which is why they matter even when you're using something else.</p>
+    <p>Available everywhere in India. No prescription needed. Internal condoms — worn inside the vagina, more effective when used correctly than external condoms, give you more control — exist and are worth knowing about, though less widely available in India.</p>
+
+    <h3>The combined oral contraceptive pill</h3>
+    <p>Daily pill, synthetic oestrogen and progestogen. Works primarily by preventing ovulation. Perfect use: over 99% effective. Typical use: around 93%.</p>
+    <p>Beyond contraception: often significantly reduces period pain, regulates irregular cycles, reduces PMS, can improve acne. Many people take it for these reasons alone.</p>
+    <p>Side effects vary by person and formulation. Nausea, mood changes, reduced libido, breast tenderness in the first few months — common. Many people experience nothing significant. If one formulation doesn't suit you, others might. Dozens of options.</p>
+    <p>Available at Indian pharmacies without a prescription. Brands include Yasmin, Femilon, Novelon. Not expensive. A doctor can advise on formulation, but you can start with what the pharmacist has.</p>
+    <p><strong>Important:</strong> certain antibiotics and anticonvulsants reduce effectiveness. Use backup if you're on antibiotics.</p>
+
+    <h3>The mini-pill</h3>
+    <p>Progestogen only. For people who can't take oestrogen — migraines with aura, high blood pressure, certain clotting histories, breastfeeding. Slightly narrower timing window (traditional mini-pill: 3 hours; newer formulations: 12 hours). Available in India — ask specifically, it's less commonly stocked.</p>
+
+    <h3>The copper IUD (Copper-T)</h3>
+    <p>Small T-shaped device inserted into the uterus. No hormones. Works by creating an environment hostile to sperm. Over 99% effective. Lasts 5–10 years, removable any time.</p>
+    <p>Periods may be heavier and more crampy for the first few months. Usually settles. Best option for people who can't or don't want hormonal methods.</p>
+    <p>In India: available at government hospitals and family planning clinics, often free or subsidised. Also available at private clinics. Insertion takes a few minutes in a gynaecologist's office.</p>
+
+    <h3>The hormonal IUD (Mirena)</h3>
+    <p>Same device, releases low-dose progestogen locally. Over 99% effective. Often reduces periods significantly — many people stop having them entirely, which is normal and not harmful. Lasts 5 years.</p>
+    <p>Less widely available in India than the copper IUD, more expensive. Available at private clinics in urban areas. Worth asking about if you want long-acting contraception with hormonal benefits.</p>
+
+    <h3>Emergency contraception</h3>
+    <p>Backup for when something goes wrong — not a regular method. i-Pill, Unwanted-72, and others contain levonorgestrel, work primarily by delaying or preventing ovulation. Most effective taken as soon as possible after unprotected sex — within 72 hours, some effect up to 120 hours.</p>
+    <p>Available OTC at every pharmacy in India. No prescription needed. Will not terminate an established pregnancy.</p>
+    <p>Using it once: fine. Using it repeatedly as your primary method: not ideal. Less effective than regular methods, causes significant hormonal disruption. If you're reaching for it regularly, set up something more consistent.</p>
+
+    <h3>The partner conversation</h3>
+    <p>Your contraception is your medical decision. Full stop.</p>
+    <p>A partner who refuses condoms because they "don't like them" is telling you something important about how they weigh their comfort against your health. Useful information.</p>
+    <p>A partner with opinions about which contraception you should use — opinions that happen to result in less protection for you — also telling you something.</p>
+    <p>You are allowed to hold a line. "I use condoms with new partners" is a complete policy. "I'm not comfortable with that" is a complete sentence. Resistance or pressure from a partner is a flag, not a negotiation to be won.</p>
+
+    <div class="callout warning">
+      <p><strong>⚠ Stealthing</strong></p>
+      <p>If a partner removes a condom without your knowledge during sex, this is called stealthing. It is non-consensual. It is classified as sexual assault in several countries. If this happens to you: emergency contraception, STI testing, and you are allowed to be angry.</p>
+    </div>
+
+    <div class="closing-warm">
+      <p>You have more options than anyone told you. You have the right to use them without explaining yourself to anyone. Best method is the one you'll actually use consistently.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s24">
+  <div class="section-inner practical-section theme-terra">
+    <p class="section-label">Section 24</p>
+    <h2 class="section-title">
+      <span class="section-icon">🌿</span>
+      Your Body After Sex
+    </h2>
+    <div class="divider"></div>
+
+    <p>A few things happen to your body in the hours after sex — solo or partnered — that nobody covers anywhere. Not complicated. Just nobody talks about them.</p>
+
+    <h3>Pee after sex. Right away.</h3>
+    <p>Most useful piece of information in this section.</p>
+    <p>The urethra sits very close to the vaginal opening. During penetrative sex or intense genital contact, bacteria can travel toward it. Urinating within 30 minutes flushes that pathway before anything establishes itself.</p>
+    <p>UTIs are extremely common in sexually active women — around 50–60% of women will have at least one in their lifetime, and sex is one of the biggest triggers. Burning during urination, frequent urgent need to pee, sometimes cloudy or pink-tinged urine. Left untreated, can travel to the kidneys and get more serious.</p>
+    <p>The pee rule doesn't guarantee you'll never get one. It significantly reduces the risk. Do it every time.</p>
+    <p>If you get a UTI: water, doctor, antibiotics. Don't wait it out. They don't resolve reliably on their own.</p>
+
+    <h3>Discharge changes</h3>
+    <p>Discharge often increases in the hours after sexual activity — thicker, slightly different colour, more noticeable. Normal. Your body doing maintenance.</p>
+    <p>Normal discharge: clear to white or off-white. Stretchy like egg white around ovulation, thicker and creamier in the luteal phase. Dries slightly yellowish on underwear — also normal. Should not have a strong or unpleasant smell.</p>
+    <p>Not normal: grey, green, or cottage-cheese texture. Strong fishy or foul smell. Accompanied by itching, burning, or swelling. These indicate bacterial vaginosis (BV) or a yeast infection — both treatable, neither a crisis, both worth seeing a doctor about rather than self-treating blindly.</p>
+
+    <h3>Vaginal pH and what disrupts it</h3>
+    <p>The vagina maintains an acidic environment (pH roughly 3.8–4.5) that keeps harmful bacteria in check. Things that disrupt it:</p>
+    <ul>
+      <li><strong>Semen</strong> is alkaline. After sex involving ejaculation internally, pH temporarily rises. Can make you more susceptible to BV short-term. Usually self-corrects.</li>
+      <li><strong>Soap inside the vagina.</strong> Don't. The vagina is self-cleaning. Soap, scented products, douches — all disrupt pH and bacterial balance. Wash the external vulva with plain water or unscented soap. Nothing inside.</li>
+      <li><strong>Antibiotics</strong> kill good bacteria along with bad, can trigger yeast infections. If you're on a course, a probiotic containing Lactobacillus helps maintain balance.</li>
+    </ul>
+
+    <h3>Soreness</h3>
+    <p>Mild soreness after penetrative sex or intense stimulation is normal, especially with insufficient lubrication. Should resolve within a day.</p>
+    <p>Soreness lasting more than a couple of days, swelling, unexpected bleeding, or pain that gets worse — worth seeing a doctor. Could be a minor tear, could be something else. Doesn't need to be suffered through.</p>
+
+    <h3>Toys</h3>
+    <p>Clean them after every use. Non-porous materials (silicone, glass, stainless steel) — soap and water or boiling. Porous materials (certain rubber or latex) harbour bacteria and can't be fully sterilised — another reason material matters.</p>
+
+    <div class="closing-warm">
+      <p>Your body manages itself well. Give it the basics — hydration, the pee rule, no soap inside — and it handles the rest. No products, rituals, or special regimes needed. Just a bathroom and some common sense.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s25">
+  <div class="section-inner practical-section theme-violet">
+    <p class="section-label">Section 25</p>
+    <h2 class="section-title">
+      <span class="section-icon">📱</span>
+      The Internet and Your Sexuality
+    </h2>
+    <div class="divider"></div>
+
+    <p>At some point — probably years before this document — the internet became your sex educator. Nobody hired it. It just showed up, had a lot to show you, and had very specific ideas about what you should be seeing.</p>
+    <p>This is about knowing how that system works, so you can use it instead of being shaped by it without noticing.</p>
+
+    <h3>How the algorithm actually works</h3>
+    <p>One goal: keep you on the platform longer. Not educate you. Not give you a balanced view. Maximise engagement.</p>
+    <p>Engagement, on platforms where sexual content exists, tends to escalate. Content slightly more extreme than what you just watched gets more of a reaction than content you've already normalised. The algorithm learns this. Serves you the next thing. Then the thing after that.</p>
+    <p>Not a conspiracy. Arithmetic. Nobody decided to push you toward increasingly extreme content. The system optimises for what keeps you watching, and escalation keeps people watching. Works on everyone, by design.</p>
+    <p>Knowing this doesn't make you immune. But the content at the end of a long session is not a neutral sample of what sex is. It's the output of an engagement machine that's been learning your responses for however long you've been using it.</p>
+
+    <h3>What pornography actually is</h3>
+    <p>Produced content. Made by people with economic incentives. For a market.</p>
+    <p>That market was historically assumed to be straight men — which is why mainstream pornography looks the way it does. What photographs well under studio lights. What sells to the broadest demographic. What performers are willing to do for what pay.</p>
+    <p>Not a documentary. The performers are performing. Sounds, timing, reactions — productions, edited, lit and angled for a camera. The bodies are selected for a specific aesthetic representing a tiny fraction of what human bodies actually look like.</p>
+    <p>None of this makes it bad. It makes it a thing with a specific context. The problem is when that context becomes invisible. When the production becomes the template.</p>
+
+    <h3>What it might be doing to your expectations</h3>
+    <p>If you've spent years watching sex before experiencing it, you have a template. You may not have chosen it consciously, but you have one.</p>
+    <p>That template probably includes: how long things should take, what sounds are right, what both bodies should look like, what a successful encounter looks like. Most of these are production choices. Not facts.</p>
+    <p>Research consistently finds that people who consume more pornography report higher rates of body image dissatisfaction, more unrealistic performance expectations, and lower satisfaction in real-life encounters — not because real sex is worse, but because the gap between production and reality is jarring when you're not expecting it.</p>
+    <p>Not a lecture. Data. Question is whether you want to be aware of the template you're carrying, or whether you'd rather not know it's there.</p>
+
+    <h3>Your own data matters more</h3>
+    <p>If you've done the self-exploration work — if you have any sense of what your body actually responds to — that information is more reliable than anything you've seen on a screen.</p>
+    <p>What feels good in your body is your data. Doesn't have to look like anything. Doesn't have to match a camera angle or happen in a particular amount of time. Yours.</p>
+    <p>The internet can show you that things exist. Introduce vocabulary. Be useful, occasionally educational, occasionally very funny. But it cannot tell you what you like. Only you can find that out.</p>
+
+    <h3>Actually useful places to learn things online</h3>
+    <p>There is genuinely good sex education content on the internet. It's just not what the algorithm serves you.</p>
+    <ul>
+      <li><strong>OMGYes</strong> (omgyes.com) — research-based, built around female pleasure, made from surveys of thousands of women about what actually works. Nothing else quite like it.</li>
+      <li><strong>Planned Parenthood's website and YouTube</strong> — calm, evidence-based, thorough.</li>
+      <li><strong>Scarleteen</strong> (scarleteen.com) — aimed at younger people but genuinely excellent. More inclusive and honest than most things out there.</li>
+      <li><strong>Reddit:</strong> r/sex, r/AskWomen, r/WomensHealth — real people, real questions, real answers. Search before you post — most things you're wondering about have been asked before.</li>
+    </ul>
+
+    <div class="warm-note">
+      Private browsing, yes. Your search history is your business. But also: notice the escalation when it's happening. Notice when the content has drifted far from where you started. Not to police yourself — just to stay conscious.
+    </div>
+
+    <div class="closing-warm">
+      <p>You are smarter than the algorithm. It just runs faster. Keep your own counsel.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s26">
+  <div class="section-inner practical-section theme-amber">
+    <p class="section-label">Section 26</p>
+    <h2 class="section-title">
+      <span class="section-icon">⚡</span>
+      Pain During Exploration
+    </h2>
+    <div class="divider"></div>
+
+    <p>Discomfort during self-exploration is common. Pain is information. Knowing the difference matters.</p>
+
+    <h3>What normal discomfort looks like</h3>
+    <p>If you're new to touching your body this way, some sensations will be unfamiliar. Unfamiliarity can feel like discomfort even when nothing is wrong — your nervous system flagging the unusual, not the harmful.</p>
+    <ul>
+      <li><strong>Clitoral sensitivity.</strong> The clitoris has roughly 8,000 nerve endings in a very small area. Direct stimulation before sufficient arousal can feel sharp or overwhelming — almost unpleasant. Not damage. Move slightly to one side, stimulate through the hood rather than directly on the glans, reduce pressure. Intensity becomes manageable with more arousal and blood flow. If it feels like too much, it probably is too much right now. Back off, come back.</li>
+      <li><strong>Dryness and friction.</strong> Without sufficient lubrication, friction causes irritation. Most common source of discomfort, most easily solved — use lubricant. Doesn't indicate something is wrong with your body. Means more time or more stimulation is needed first.</li>
+      <li><strong>Tension.</strong> Anxious, rushed, hyper-aware of potential discovery — your pelvic floor muscles will be contracted. Touching a contracted muscle is uncomfortable. Slower, more breathing, less urgency.</li>
+      <li><strong>Muscle fatigue.</strong> Been at this a while — some cramping or aching is normal. Same as any muscle. Stop, rest.</li>
+    </ul>
+
+    <h3>The pressure/pain distinction</h3>
+    <p>Pressure is expected. A feeling of fullness, intensity, mild ache — part of the landscape.</p>
+    <p>Pain — sharp, stabbing, burning, or pain that makes you want to immediately stop — is different. Your body sending a clear signal. Listen to it.</p>
+
+    <h3>When to see a doctor</h3>
+    <ul>
+      <li><strong>Pain that persists after you've stopped.</strong> Lingering soreness for an hour or two can be normal after intense stimulation. Pain lasting the next day, or that feels internal, is worth checking.</li>
+      <li><strong>Sharp internal pain.</strong> Could indicate a cyst, fibroids, endometriosis. Diagnosable. Treatable. Not rare. Not something to push through.</li>
+      <li><strong>Bleeding that isn't your period.</strong> A very small amount of spotting from friction is occasionally possible. Any actual bleeding from internal exploration warrants a check.</li>
+      <li><strong>Pain that gets worse over time, not better.</strong> If exploration has been consistently painful across weeks or months despite adjusting — that's data. Bring it to a doctor.</li>
+    </ul>
+
+    <h3>Vaginismus</h3>
+    <p>Involuntary contraction of the vaginal muscles in response to attempted penetration — or even in anticipation of it. Makes any penetration painful or impossible. Not a physical structural problem. A conditioned muscular response.</p>
+    <p>Very common. Significantly more common in women from conservative or high-anxiety backgrounds around sex. Not a defect. A reflex. Reflexes can be unlearned.</p>
+    <p>Highly treatable. Pelvic floor physiotherapy has strong outcomes — gradual desensitisation, breathing work, progressive muscle relaxation. If penetration has been painful or impossible for you, raise it with a gynaecologist who won't dismiss it. Not something to just live with.</p>
+
+    <div class="closing-warm">
+      <p>Discomfort is a prompt to adjust. Pain is a reason to stop. No medal for pushing through either one.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s27">
+  <div class="section-inner practical-section theme-terra">
+    <p class="section-label">Section 27</p>
+    <h2 class="section-title">
+      <span class="section-icon">✂️</span>
+      Grooming
+    </h2>
+    <div class="divider"></div>
+
+    <p>Entirely optional. Starting there.</p>
+    <p>No correct amount of body hair. No version of your body that requires modification before it's acceptable. Grooming is personal preference — comfort, sensation, aesthetics, whatever matters to you. Only opinion that counts is yours.</p>
+    <p>That said: a lot of people want to know what their options are and nobody told them.</p>
+
+    <h3>The options</h3>
+    <ul>
+      <li><strong>Shaving</strong> — most accessible. Sharp razor, shaving gel or conditioner (not dry), short strokes in the direction of hair growth for the bikini line. Change the blade regularly — a dull blade is the main cause of irritation and ingrown hairs. Rinse with cold water after, no fragrant products immediately after. Regrowth is stubbly and some people find it itchy. If that bothers you, shaving might not be your method.</li>
+      <li><strong>Trimming</strong> — electric trimmer or scissors, keeps things neat without the regrowth issue. Good option if you want reduction without full removal. Philips BikiniGenie and similar compact trimmers widely available in India. Use on dry hair, go slowly.</li>
+      <li><strong>Waxing</strong> — removes hair from the root, regrowth softer and slower (3–4 weeks). Brazilian and bikini line waxing available at most salons in Indian cities. It hurts, briefly. Less each time. Exfoliate a couple of days before to reduce ingrown hairs. Don't wax over active breakouts or irritated skin.</li>
+      <li><strong>Laser hair removal</strong> — permanent reduction. Available at dermatology and laser clinics in most Indian cities. Multiple sessions typically required (6–8, spaced 4–6 weeks apart). More expensive upfront, cost-effective over time if you're spending on waxing regularly. Works best on dark hair against lighter skin. Patch test first.</li>
+      <li><strong>Hair removal creams</strong> — Veet and Anne French most common in India. Dissolve the hair shaft. Do a patch test on a less sensitive area first — skin near the vulva is more sensitive than your legs. Leave on for minimum recommended time, rinse thoroughly. Nothing inside the vaginal opening.</li>
+    </ul>
+
+    <h3>Ingrown hairs</h3>
+    <p>Main complication of most methods. Hair grows back into skin rather than outward — small bumps, sometimes with a dark spot or pus. Don't dig at them. Gentle exfoliation a few times a week when not freshly waxed or shaved. Warm compress helps. Most resolve on their own. Significantly inflamed, red, or painful — minor skin infection, worth a doctor's attention.</p>
+
+    <h3>The skin itself</h3>
+    <p>Thinner and more sensitive than most of the body. Whatever method you use — no fragrant products, no harsh soaps, nothing with alcohol directly after hair removal. Plain unscented lotion or aloe vera if you moisturise. No special products needed.</p>
+    <p>Consistent irritation, ingrowns, or folliculitis from shaving or waxing? Switch methods. Trimming or laser are both lower-irritation long-term.</p>
+
+    <h3>The pink tax — buy men's razors</h3>
+    <p>Women's razors cost more than men's razors. Consistently, across brands, across price points. The NYC Department of Consumer Affairs documented a 7% average markup on women's personal care products compared to equivalent men's — and in razors and shaving items specifically, the gap is higher.</p>
+    <p>What you get for that markup: a pink handle, a moisturising strip of questionable value, and marketing implying your legs have different requirements than a face. They don't. Blades are blades.</p>
+    <p>Men's razors at mid-range price points — Gillette Mach3, Gillette SkinGuard, similar options from Bombay Shaving Company's unisex lines — give you better blade quality for less money. The handles are slightly different ergonomically. You adjust in one use. Shave is the same or better.</p>
+    <p>Same logic applies to shaving gel. Men's shaving gel is cheaper and works identically on any skin. The pink tax is real and documented. The solution is extremely simple: shop the men's aisle.</p>
+
+    <div class="closing-warm">
+      <p>Your body is not a maintenance project. Handle it accordingly.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s28">
+  <div class="section-inner practical-section theme-rose">
+    <p class="section-label">Section 28</p>
+    <h2 class="section-title">
+      <span class="section-icon">💬</span>
+      Talking to a Partner
+    </h2>
+    <div class="divider"></div>
+
+    <p>Knowing what you want and being able to say it to another person are completely different skills. First one you build alone. Second one takes practice — and it will feel awkward before it feels natural. That's not a sign you're doing it wrong.</p>
+
+    <h3>Why it's hard</h3>
+    <p>You've spent your whole life being rewarded for not taking up space. Not making requests. Not being inconvenient.</p>
+    <p>The accommodation reflex — it shows up here too. Specifically as: the inability to say <em>I want this</em> or <em>not that</em> to someone you're intimate with, because wanting things and saying so feels demanding, presumptuous, or like too much.</p>
+    <p>It isn't. It's just communication. Feels like a big deal because you were never told it was allowed.</p>
+
+    <h3>Before the moment</h3>
+    <p>Easiest conversations about sex happen outside of it. Not mid-way through. Not immediately after when emotions are high. Neutral moment — over food, on a walk, whenever you're both relaxed.</p>
+    <p>"Can I tell you something I've been thinking about?" works as an opener for almost any of this.</p>
+    <p>You don't need everything figured out. You can be exploratory: <em>I've been thinking about what I actually like and I want to start being more honest about it with you.</em> That sentence alone does more work than you'd expect.</p>
+
+    <h3>In the moment</h3>
+    <p>Short is better. Full sentences are optional.</p>
+    <p><em>A little slower. Right there. Can we try something different? That doesn't feel great — can we adjust? Keep doing that.</em></p>
+    <p>Positive direction is easier to start with than the correction. Tell someone when something is working before you tell them when it isn't. Builds a shared vocabulary — they learn what your <em>yes</em> sounds like, which makes your <em>not quite</em> easier to interpret.</p>
+    <p>If words feel impossible in the moment, sound and movement are information too. Moving someone's hand is communication. Pulling closer is communication. Stilling and tensing is communication, if they're paying attention. If they're not paying attention to your signals — worth noting.</p>
+
+    <h3>The correction</h3>
+    <p>Harder part. Telling someone to keep doing a thing is easy. Telling someone to stop or change is where most people swallow it and say nothing.</p>
+    <ul>
+      <li><em>Frame it as information, not criticism.</em> "I've figured out I like X better than Y" lands differently from "don't do Y." One is about you. One feels like a verdict on them.</li>
+      <li><em>Use the redirect.</em> "Actually, can we try—" and then say the thing.</li>
+      <li><em>After, not during, if you couldn't manage during.</em> "Hey, I wanted to mention — that thing earlier, I didn't love it. Can we do less of that?" Delayed is fine. Not saying it at all means it keeps happening.</li>
+    </ul>
+
+    <h3>When a partner doesn't respond well</h3>
+    <p>A partner who responds to your expressed preferences with defensiveness, sulking, or making you feel bad for having them is telling you something. Not about you. About them.</p>
+    <p>You are not demanding by having preferences. Anyone who makes you feel that way when you communicate honestly is someone you'll spend the rest of the relationship staying silent around. Worth knowing early.</p>
+    <p>A good partner responds to <em>I like this</em> and <em>not that</em> with curiosity, not ego. They adjust. They ask follow-up questions. They do not make it about their performance or their feelings. The goal is both of you having a good time — that requires information, and information requires that you're both allowed to give it.</p>
+
+    <div class="warm-note">
+      The practice is just staying in the habit of saying things. Small things. Regularly. So it stops feeling like a big deal every time and becomes just — how you communicate with this person.
+    </div>
+
+    <div class="closing-warm">
+      <p>First time you say what you actually want out loud to someone, it will feel enormous. Second time, slightly less. Tenth time, nothing at all. That's the whole arc. Start somewhere.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s29">
+  <div class="section-inner practical-section theme-sage">
+    <p class="section-label">Section 29</p>
+    <h2 class="section-title">
+      <span class="section-icon">🤝</span>
+      Finding Your Person
+    </h2>
+    <div class="divider"></div>
+
+    <p>You shouldn't have to navigate all of this alone. Information helps, but it's not the same as a person. Someone you can talk to, ask follow-up questions, call when something confusing happens at 11pm. That person matters.</p>
+
+    <h3>What you're looking for</h3>
+    <p>Not everyone is a candidate. You need someone who:</p>
+    <ul>
+      <li><strong>Doesn't panic.</strong> You say something unexpected, they stay in the conversation. Don't change the subject, go silent, or respond with alarm.</li>
+      <li><strong>Doesn't judge.</strong> Not just someone who won't tell people — someone whose internal response isn't visible disapproval you then have to manage.</li>
+      <li><strong>Has their own life sorted enough to have bandwidth for yours.</strong> Someone drowning in their own crises cannot reliably be there for yours.</li>
+      <li><strong>Keeps things to themselves.</strong> Before you tell anyone anything significant, ask yourself: have I ever heard this person share someone else's private information with me? If yes, assume yours will be shared too.</li>
+    </ul>
+    <p>These people are rarer than they should be. You might find one or two. That's enough.</p>
+
+    <h3>Where they tend to appear</h3>
+    <p>Older women who've already navigated the things you're navigating — a cousin in her 30s, a friend's older sibling, a work mentor. People who've been through it are usually better than people who are in the middle of it alongside you.</p>
+    <p>Friends who've demonstrated discretion. Not friends who tell you everything about everyone — friends who, when something important came up, you noticed they didn't spread it.</p>
+    <p>Therapists and counsellors. iCall (icallhelpline.org) offers low-cost counselling in India with trained counsellors who have heard everything. This is literally their job. Confidentiality is professional. Judgment is absent by design.</p>
+    <p>Online communities with good moderation. r/AskIndianWomen is better than most — real people, same specific cultural context, and your question is probably not as unusual as it feels.</p>
+
+    <h3>How to start the conversation</h3>
+    <p>You don't have to lead with everything. Test first.</p>
+    <p>Share something smaller than the thing you actually want to talk about. See how they handle it. Handle it well — stay in the conversation, respond without drama, hold it quietly — that's information. Share more next time.</p>
+    <p>"I have a question and I'm not sure who to ask" is a legitimate opener. Signals that this matters and that you chose them deliberately. Most good people respond to that with care.</p>
+
+    <h3>The dangers</h3>
+    <p>Not everyone who presents as safe is safe.</p>
+    <ul>
+      <li><strong>The person who uses your disclosure as leverage.</strong> Shares it with others, brings it up in arguments, uses it to make you feel like they own something about you. Notice this pattern, stop sharing. Don't address it, don't explain yourself. Just stop.</li>
+      <li><strong>The person who responds to your vulnerability with their own sexual interest.</strong> Someone significantly older who becomes unusually warm and available when you start sharing personal things. Someone who uses "support" to create physical proximity or dependency. This is a grooming dynamic — it doesn't only happen to children, it happens to young adults who are isolated and looking for guidance. Trust someone who gives you information and lets you go with it. Distrust anyone whose support seems designed to increase your closeness to them specifically.</li>
+      <li><strong>The person who helps themselves to your information.</strong> Tells your family. Tells mutual friends. Posts something vague online that's clearly about you. Not always malicious — some people genuinely don't understand confidentiality. Impact is the same.</li>
+    </ul>
+
+    <h3>When there isn't anyone</h3>
+    <p>Honest reality for a lot of young women from conservative families. The people around you may not be safe. Your family may be actively part of the environment you need distance from. Not a personal failure. A structural one.</p>
+    <p>Options when offline isn't available:</p>
+    <ul>
+      <li><strong>iCall</strong> — trained counsellors, low-cost, confidential: icallhelpline.org</li>
+      <li><strong>r/AskIndianWomen</strong> — not a substitute for a real person, but better than nothing.</li>
+      <li><strong>This document</strong> — written for exactly this situation. You have it now.</li>
+    </ul>
+
+    <div class="closing-warm">
+      <p>Finding your person takes time. Some find them early, some late, some build the relationship slowly over years without one big conversation. All fine. Goal is just not being completely alone with it. You don't have to be.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s30">
+  <div class="section-inner practical-section theme-blue">
+    <p class="section-label">Section 30</p>
+    <h2 class="section-title">
+      <span class="section-icon">🔒</span>
+      Digital Safety
+    </h2>
+    <div class="divider"></div>
+
+    <p>You are entitled to a private inner life. That includes your search history, your reading, your purchases, your conversations about your own body. None of it is anyone else's business. Here's how to actually protect it.</p>
+
+    <h3>Private browsing — what it does and doesn't do</h3>
+    <p>Every major browser has a private or incognito mode. Chrome: three dots → New Incognito Window. Safari: Private. Firefox: Private Window.</p>
+    <p><strong>Does:</strong> Doesn't save browsing history, search terms, cookies, or form entries on the device. When you close the window, it's gone.</p>
+    <p><strong>Doesn't:</strong> Hide your activity from your internet service provider, from the WiFi router your household uses, from your school or workplace network, or from the websites themselves. If someone has access to your router's admin panel — whoever set up the WiFi — they can see which domains you visited, not the specific pages.</p>
+    <p>For most situations — parent picking up your phone, roommate borrowing your laptop — incognito is sufficient. For a technically capable person with router access who is actively looking, it isn't.</p>
+    <p>One more thing: if you're logged into a Google account while browsing, Google saves your search history to that account even in incognito mode. Go to myactivity.google.com to see it and delete it. Better: use incognito while logged out of Google entirely, or use a different browser for sensitive searches.</p>
+
+    <h3>WhatsApp</h3>
+    <p>If someone has access to your unlocked phone, they can read your WhatsApp. Full stop.</p>
+    <p>Useful features:</p>
+    <ul>
+      <li><strong>Chat Lock</strong> — long press a conversation → Lock Chat. That conversation disappears from your main inbox into a separate locked folder requiring biometric or PIN.</li>
+      <li><strong>Disappearing messages</strong> — set per-conversation, messages delete automatically after a set time.</li>
+      <li><strong>Archive</strong> — not private, but keeps conversations out of your main view.</li>
+    </ul>
+
+    <h3>Period tracking apps</h3>
+    <p>Your cycle data is sensitive health information. Clue is the most privacy-forward — they've committed to not sharing data with third parties. Flo has had privacy concerns. Whatever app you use: your cycle data, symptom logs, notes are stored somewhere and tell a detailed story about your body. Treat them accordingly.</p>
+
+    <h3>Photos and your camera roll</h3>
+    <p>A device that backs up to a shared cloud account — family iCloud, shared Google Photos — means those photos are visible to everyone on that account.</p>
+    <ul>
+      <li><strong>iPhone:</strong> Settings → your name → iCloud → Photos → turn off iCloud Photos on a shared account, or create your own separate Apple ID. Enable "Use Face ID" for the Hidden Album in Settings → Photos — it's not encrypted by default.</li>
+      <li><strong>Android (Samsung):</strong> Secure Folder is a separate encrypted space on the device. Settings → Biometrics and Security. Files in Secure Folder don't appear in your main gallery and don't back up to shared clouds.</li>
+    </ul>
+
+    <h3>Packages and purchases</h3>
+    <p>Almost all reputable online sellers in India — Amazon, Nykaa, most adult product retailers — ship in plain packaging by default. Check before ordering.</p>
+    <p>Ordering to a shared address and want privacy: Amazon locker pickup is available in many Indian cities. Workplace address works. Prepaid wallet or UPI account in your own name means purchase history doesn't appear on a family credit card statement.</p>
+
+    <div class="warm-note">
+      You are not doing anything wrong by wanting privacy. Privacy is not the same as secrecy. These tools exist specifically to protect your inner life. Use them without guilt.
+    </div>
+
+    <div class="closing-warm">
+      <p>Your inner life belongs to you. Technology just needs a little help remembering that.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+<section id="s31">
+  <div class="section-inner practical-section theme-rose">
+    <p class="section-label">Section 31</p>
+    <h2 class="section-title">
+      <span class="section-icon">🌙</span>
+      Periods and Pleasure
+    </h2>
+    <div class="divider"></div>
+
+    <p>Your menstrual cycle doesn't just affect your mood and your uterus. It affects your libido, your sensitivity, how easily arousal comes, and what kinds of touch feel good. Working with it instead of being confused by it makes a difference.</p>
+
+    <h3>Orgasms and cramps</h3>
+    <p>During orgasm, the uterus contracts rhythmically and the body releases oxytocin and endorphins — same neurochemicals involved in pain relief. Pelvic blood flow that accompanies arousal also helps relax cramping muscles.</p>
+    <p>The research isn't large-scale, but the mechanism is sound and the anecdotal evidence is overwhelming. If you're in the first day or two of your period and cramps are bad, this is a legitimate option. No downside.</p>
+    <p>Masturbating during your period is safe. Doesn't cause infection, doesn't affect your flow harmfully. May temporarily increase flow — uterine contractions expel more blood — which some people actually find useful.</p>
+
+    <h3>Libido across your cycle</h3>
+    <ul>
+      <li><strong>Follicular phase</strong> (day 1 of period through ovulation — roughly first half of your cycle): oestrogen rises. Energy improves. Libido often increases. Arousal comes more easily. Lubrication is better. Generally the phase where exploration feels most natural.</li>
+      <li><strong>Ovulation</strong> (roughly mid-cycle): oestrogen peaks, brief testosterone surge. Highest-libido point of the cycle for many people. Increased genital sensitivity, heightened interest, cervical fluid that's clearer and more slippery. Your body making a case for itself.</li>
+      <li><strong>Luteal phase</strong> (post-ovulation to next period): progesterone rises then drops. Libido often dips. Breast tenderness common — chest sensitivity that felt good earlier might feel like too much now. Work with this rather than against it. Lower-intensity, more diffuse stimulation.</li>
+      <li><strong>Menstrual phase:</strong> varies enormously. Some find increased pelvic blood flow during their period makes them more sensitive than usual. Some want nothing to do with their body for four days. Both completely normal.</li>
+    </ul>
+
+    <h3>Sensitivity changes across your cycle</h3>
+    <p>Your cervix changes position across your cycle — higher and softer around ovulation, lower and firmer before your period. Affects how internal pressure feels. Something comfortable at mid-cycle might feel different or uncomfortable in the days before your period. Normal variation, not a sign something's wrong.</p>
+    <p>Around ovulation, the clitoris and vulva are often more sensitive — arousal is faster, sensation more intense. Right before your period, some people find response is slower, more stimulation needed. Both hormonal, both shift again once your period starts.</p>
+
+    <h3>Period sex</h3>
+    <p>Safe. Fine. Only practical consideration is mess — dark towel underneath, the shower, or a menstrual disc (not a cup — discs are designed to be worn during sex).</p>
+    <p>Some partners have no issue. Some do. If a partner expresses disgust at your body's normal function — not a preference, disgust — worth filing away.</p>
+
+    <div class="closing-warm">
+      <p>Your body has a rhythm. You don't have to optimise around it. But knowing it means fewer confusing days and more moments where you're not working against yourself.</p>
+      <p class="sign">❤️</p>
+    </div>
+  </div>
+</section>
+
+
 <section id="s13">
   <div class="section-inner theme-sage">
     <p class="section-label">Section 13</p>
     <h2 class="section-title"><span class="section-icon">&#x1f4cf;</span> Physical Development: A Visual Timeline</h2>
     <p>These schematic illustrations show typical physical development for Indian adolescents across six age points, grounded in Tanner staging and NFHS-5 / ICMR growth data. Every body develops on its own schedule &mdash; these represent <em>average</em> trajectories, not standards to measure against.</p>
-    <div style="background:rgba(126,200,200,0.08); border-radius:10px; padding:16px 22px; margin:18px 0 24px; border-left:4px solid var(--teal); font-size:14px;">
+    <div style="background:var(--dusty-blue-pale); border-radius:10px; padding:16px 22px; margin:18px 0 24px; border-left:4px solid var(--dusty-blue); font-size:14px;">
       <strong>Important:</strong> Significant individual variation is normal. Starting earlier or later than these averages does not indicate any problem. If you have concerns about your development, a paediatrician or school health counsellor can help.
     </div>
 
@@ -1856,7 +3116,7 @@
 <section id="s15">
   <div class="section-inner practical-section theme-violet">
     <p class="section-label">Section 15</p>
-    <h2 class="section-title"><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8a86a8" stroke-width="1.8" stroke-linecap="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></span> Attraction, Identity & the Space Between Labels</h2>
+    <h2 class="section-title"><span class="section-icon">🌊</span> Attraction, Identity & the Space Between Labels</h2>
 
     <p style="font-size:15px; line-height:1.85; margin-bottom:22px;">Most sex education — when it exists at all — teaches attraction as binary: you are heterosexual or homosexual, sexual or not. Research tells a far more interesting and accurate story. Attraction is dimensional, often fluid, and frequently doesn't map cleanly onto any category. This section is for anyone who has ever felt: <em>"I don't quite fit any of the words I've been given."</em></p>
 
@@ -2057,14 +3317,22 @@
 </div>
 
 <footer>
-  This document was compiled for advocacy and policy purposes. All data is drawn from peer-reviewed research, national health surveys, and published academic literature. · May 2026
+  <p style="font-size:15px; color:var(--ink); margin:0 0 10px; font-family:'Fraunces',serif; font-style:italic; line-height:1.7;">
+    We wrote this because we wish we'd had it — and because you deserve someone in your corner who tells you the truth without making it weird. That's all this ever was.
+  </p>
+  <p style="font-size:13px; color:var(--ink-mid); margin:0 0 18px; line-height:1.7;">
+    A huge thank you to <a href="https://reddit.com/r/AskIndianWomen" target="_blank" rel="noopener" style="color:var(--terra);text-decoration:underline;text-underline-offset:3px;">r/AskIndianWomen</a> for giving this a home — you're proof the internet can still be good.
+  </p>
+  <p style="font-size:11px; color:var(--ink-light); margin:0;">
+    — <a href="https://reddit.com/u/Formerly_Shredacc" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">u/Formerly_Shredacc</a> &amp; <a href="https://reddit.com/u/whimsicalmeoww" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">u/whimsicalmeoww</a> &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp; All data from peer-reviewed research, national health surveys, and published academic literature.
+  </p>
 </footer>
 
 <!-- ═══════════════════════════════ CHARTS JS ═══════════════════════════════ -->
 <script>
-const INDIGO = '#7ec8c8';
+const INDIGO = '#3A5A8A';
 const INDIGO_L = '#6b7fd4';
-const ROSE = '#c97bb2';
+const ROSE = '#C44060';
 const ROSE_L = '#e57373';
 const TEAL = '#008080';
 const TEAL_L = '#4db6ac';
